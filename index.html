@@ -132,6 +132,8 @@
   .guide[open] .garrow::after{content:"▴"}
   .guide.flash{animation:gflash 1.2s ease 2}
   @keyframes gflash{0%,100%{box-shadow:0 0 0 0 rgba(216,180,95,0)}50%{box-shadow:0 0 0 6px rgba(216,180,95,.6)}}
+  .hintx{font-family:var(--ui-font);font-size:10.5px;line-height:1;color:#8a6d1c;background:#fdf3d6;border:1px solid #e6cf8a;padding:2px 6px;margin-left:8px;vertical-align:middle;white-space:nowrap}
+  #mform .lh{display:block;font-size:11px;color:#8a6d1c;margin-top:3px;line-height:1.4}
   .gbtn{font-family:var(--ui-font);font-size:11px;line-height:1;padding:3px 8px;border:1px solid var(--navy);background:var(--gold);color:var(--navy);cursor:pointer;vertical-align:middle;margin-left:6px;white-space:nowrap}
   @media print{ .gbtn{display:none !important} }
   .guide .gb{padding:12px 15px 16px}
@@ -369,7 +371,7 @@
     <tr><th>實習地址</th><td colspan="5"><input class="c" placeholder="點此填寫" data-k="siteAddr"></td></tr>
     <tr><th>負責人</th><td><input class="c" placeholder="點此填寫" data-k="boss"></td><th>聯絡人</th><td><input class="c" placeholder="點此填寫" data-k="contact"></td><th>聯絡電話</th><td><input class="c" placeholder="點此填寫" data-k="contactTel"></td></tr>
     <tr><th style="line-height:1.3">統一編號或<br>營業登記證</th><td colspan="3"><input class="c" placeholder="點此填寫" data-k="taxId"></td><th>產業類型</th><td><input class="c" placeholder="點此填寫" data-k="industry"></td></tr>
-    <tr><th>評估日期</th><td colspan="5">民國 <input class="n" data-k="evY">年<input class="n" data-k="evM">月<input class="n" data-k="evD">日</td></tr>
+    <tr><th>評估日期</th><td colspan="5">民國 <input class="n" data-k="evY">年<input class="n" data-k="evM">月<input class="n" data-k="evD">日<span class="hintx no-print">請填開學日以前的日期</span></td></tr>
     <tr><th>評估方式</th><td colspan="5">
       <label class="cb"><input type="checkbox" data-k="ev1">實地訪視</label>
       <label class="cb"><input type="checkbox" data-k="ev2" checked>電話訪談</label>
@@ -475,7 +477,7 @@
     <p>職　　　稱：<input class="u w l" data-k="repTitle"></p>
     <p>連絡電話：　<input class="u w l" data-k="repTel"></p>
   </div>
-  <p class="date">中　華　民　國　<input class="n" data-k="dy">　年　<input class="n" data-k="dm">　月　<input class="n" data-k="dd">　日</p>
+  <p class="date">中　華　民　國　<input class="n" data-k="dy">　年　<input class="n" data-k="dm">　月　<input class="n" data-k="dd">　日<span class="hintx no-print">須為開學日以前</span></p>
 </section>
 
 <!-- ============ 3. 實習意願確認切結書 ============ -->
@@ -497,7 +499,7 @@
     <p>立切結書人：<input class="u l" data-k="name" style="width:10em">　<span style="white-space:nowrap">（簽名：<span class="sigslot" data-sig="sigStudent" style="display:inline-flex;min-width:8em;border-bottom:1px solid #000;min-height:1.4em;vertical-align:bottom"></span>）</span></p>
     <p>學號：<input class="u w l" data-k="sid"></p>
   </div>
-  <p class="date">中　華　民　國　<input class="n" data-k="dy">　年　<input class="n" data-k="dm">　月　<input class="n" data-k="dd">　日</p>
+  <p class="date">中　華　民　國　<input class="n" data-k="dy">　年　<input class="n" data-k="dm">　月　<input class="n" data-k="dd">　日<span class="hintx no-print">須為開學日以前</span></p>
 </section>
 
 <!-- ============ 4. 監護人同意書 ============ -->
@@ -532,7 +534,7 @@
     <p>連絡電話：　<input class="u w l" data-k="guardianTel"></p>
     <p>監護人意見：<textarea placeholder="點此填寫" rows="2" data-k="guardianNote" style="display:inline-block;width:100%;border-bottom:1px solid #000"></textarea></p>
   </div>
-  <p class="date">中　華　民　國　<input class="n" data-k="dy">　年　<input class="n" data-k="dm">　月　<input class="n" data-k="dd">　日</p>
+  <p class="date">中　華　民　國　<input class="n" data-k="dy">　年　<input class="n" data-k="dm">　月　<input class="n" data-k="dd">　日<span class="hintx no-print">須為開學日以前</span></p>
 </section>
 
 <!-- ============ 5. 實習計畫書 ============ -->
@@ -587,9 +589,9 @@
     {t:'sel',k:'course',l:'實習課程',opts:['資訊實務實習（一）','資訊實務實習（二）','程式實務實習（一）','程式實務實習（二）','實務研究實習（一）','實務研究實習（二）']},
     {t:'row',l:'學年度／學期',items:[N('ay','學年度'),{t:'sel',k:'sem',opts:[['一','第一學期'],['二','第二學期']]}]},
     T('sid','學號'),T('name','學生姓名'),N('grade','年級'),T('org','實習單位名稱'),
-    D('s','實習開始日（民國）'),D('e','實習結束日（民國）'),D('d','文件日期（民國）'),{t:'note',l:'其餘欄位請直接在右側文件上點選填寫；淡灰底的位置即為可填寫處。',desktop:true}];
+    D('s','實習開始日（民國）'),D('e','實習結束日（民國）'),{t:'date',p:'d',l:'文件日期（民國）',hint:'各文件底下的日期，須填開學日以前'},{t:'note',l:'其餘欄位請直接在右側文件上點選填寫；淡灰底的位置即為可填寫處。<br>除「實習期間」外，所有日期（文件日期、評估日期）都必須填開學日以前的日期。',desktop:true}];
   const SPEC={
-    p1:[...COMMON,H('壹、實習單位資料'),T('dept','系級（自動帶入，可修改）'),T('orgAddr','公司地址'),T('siteAddr','實習地址'),T('boss','負責人'),T('contact','聯絡人'),T('contactTel','聯絡電話',{tel:true}),T('taxId','統一編號或營業登記證'),T('industry','產業類型'),D('ev','評估日期（民國）'),
+    p1:[...COMMON,H('壹、實習單位資料'),T('dept','系級（自動帶入，可修改）'),T('orgAddr','公司地址'),T('siteAddr','實習地址'),T('boss','負責人'),T('contact','聯絡人'),T('contactTel','聯絡電話',{tel:true}),T('taxId','統一編號或營業登記證'),T('industry','產業類型'),{t:'date',p:'ev',l:'評估日期（民國）',hint:'須填開學日以前'},
       C('評估方式',[chk('ev1','實地訪視'),chk('ev2','電話訪談'),chk('ev3','與實習機構人員面談'),chk('ev4','其他')]),T('ev4t','評估方式：其他（說明）'),
       H('貳、實習工作概況'),A('jobDesc','實習工作內容'),N('hrsWeek','實習時間（時／週）'),
       C('提供薪資額度',[chk('payYes','是'),chk('payNo','否')]),T('payAmt','薪資額度'),
@@ -625,7 +627,7 @@
       case 'area': return `<div class="fld top"><label>${f.l}</label><textarea data-k="${f.k}" rows="2"></textarea></div>`;
       case 'sel': return `<div class="fld"><label>${f.l}</label>${sel(f.k,f.opts)}</div>`;
       case 'row': return `<div class="fld"><label>${f.l}</label><div class="inl">${f.items.map(i=>i.t==='sel'?sel(i.k,i.opts):inp(i)).join('')}</div></div>`;
-      case 'date': return `<div class="fld"><label>${f.l}</label><div class="inl"><input type="number" inputmode="numeric" data-k="${f.p}y" placeholder="年"><span>年</span><input type="number" inputmode="numeric" data-k="${f.p}m" placeholder="月"><span>月</span><input type="number" inputmode="numeric" data-k="${f.p}d" placeholder="日"><span>日</span></div></div>`;
+      case 'date': return `<div class="fld${f.hint?' top':''}"><label>${f.l}${f.hint?`<span class="lh">${f.hint}</span>`:''}</label><div class="inl"><input type="number" inputmode="numeric" data-k="${f.p}y" placeholder="年"><span>年</span><input type="number" inputmode="numeric" data-k="${f.p}m" placeholder="月"><span>月</span><input type="number" inputmode="numeric" data-k="${f.p}d" placeholder="日"><span>日</span></div></div>`;
       case 'chips': return `<div class="fld top"><label>${f.l}</label><div class="chips">${f.items.map(i=>`<label><input type="checkbox" data-k="${i.k}">${i.l}</label>`).join('')}</div></div>`;
       case 'rate': return `<div class="fld"><label>${f.l}</label><div class="chips rate">${[5,4,3,2,1].map(v=>`<label><input type="radio" name="m_${f.k}" value="${v}" data-k="${f.k}">${v}</label>`).join('')}</div></div>`;
       case 'sig': return `<div class="fld top"><label>${f.l}</label><div class="sigbox" data-sig="${f.k}"></div></div>`;
