@@ -24,44 +24,116 @@
 
   /* ---------- 系統介面（不列印） ---------- */
   :root{
-    --ui-font:"Segoe UI","Microsoft JhengHei","PingFang TC","Noto Sans TC","Noto Sans CJK TC",system-ui,sans-serif;
-    --navy:#17304f; --navy-2:#0f2239; --text:#1f2933; --muted:#5f6b7a; --bd:#d3d9e0; --bg-soft:#f4f6f8; --side-w:340px; --top-h:52px;
+    --ui-font:"Noto Sans TC","Microsoft JhengHei","PingFang TC","Segoe UI",system-ui,sans-serif;
+    --mono:ui-monospace,Menlo,Consolas,monospace;
+    --navy:#14243c; --gold:#d8b45f; --text:#1f2933; --muted:#5f6b7a; --muted2:#7a8593; --faint:#98a2ad;
+    --bd:#ccd2da; --bd2:#e7ebef; --row:#f0f2f5; --band:#f7f8fa; --canvas:#dfe3e8; --green:#3f7d58; --amber:#c08a2e; --red:#b23a3a;
+    --left-w:530px;
   }
-  .ui{font-family:var(--ui-font);color:var(--text);font-size:14px;line-height:1.5}
-  .top{background:var(--navy);color:#fff;padding:0 20px;height:var(--top-h);display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;top:0;z-index:20}
-  .top .brand{display:flex;align-items:baseline;gap:12px;min-width:0}
-  .top .school{font-size:13px;letter-spacing:.08em;opacity:.85;white-space:nowrap}
-  .top h1{font-size:16px;font-weight:600;margin:0;letter-spacing:.04em;white-space:nowrap}
-  .top .toplinks{display:flex;gap:6px}
-  .top .toplinks button{font:inherit;font-size:13px;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.35);padding:5px 12px;border-radius:2px;cursor:pointer}
-  .top .toplinks button:hover{background:rgba(255,255,255,.1)}
-  .app{display:flex;align-items:flex-start;min-height:calc(100vh - var(--top-h))}
-  .side{width:var(--side-w);flex:none;background:#fff;border-right:1px solid var(--bd);position:sticky;top:var(--top-h);height:calc(100vh - var(--top-h));overflow-y:auto;padding:18px 20px 24px}
-  .blk{margin-bottom:22px}
-  .bt{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.12em;margin:0 0 8px;text-transform:uppercase}
-  .doclist{display:flex;flex-direction:column;border:1px solid var(--bd);border-radius:2px;overflow:hidden}
-  .doclist button{font:inherit;font-size:14px;color:var(--text);background:#fff;border:0;border-bottom:1px solid #e7ebef;border-left:3px solid transparent;padding:9px 12px;cursor:pointer;display:flex;align-items:center;gap:10px;text-align:left}
-  .doclist button:last-child{border-bottom:0}
-  .doclist button:hover{background:var(--bg-soft)}
-  .doclist button.on{background:#eef2f7;border-left-color:var(--navy);color:var(--navy);font-weight:600}
-  .doclist .no{font-size:11px;font-weight:600;width:20px;height:20px;border:1px solid var(--bd);border-radius:2px;display:inline-flex;align-items:center;justify-content:center;color:var(--muted);flex:none}
-  .doclist button.on .no{background:var(--navy);border-color:var(--navy);color:#fff}
-  .doclist .nm{flex:1}
-  .doclist .tag{font-size:11px;font-weight:400;color:var(--muted);border:1px solid var(--bd);border-radius:2px;padding:0 5px;line-height:16px;white-space:nowrap}
-  .f{display:flex;flex-direction:column;gap:3px;min-width:0;margin-bottom:10px}
-  .row2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
-  .lbl{font-size:12px;color:var(--muted);letter-spacing:.02em}
-  .side select,.side input[type=text],.side input[type=number]{
-    font:inherit;font-size:14px;height:32px;padding:0 8px;border:1px solid var(--bd);border-radius:2px;background:#fff;color:var(--text);width:100%;min-width:0
+  .ui{font-family:var(--ui-font);color:var(--text);font-size:13px;line-height:1.5}
+  .mono{font-family:var(--mono)}
+  /* 頁首 */
+  .top{height:58px;background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:sticky;top:0;z-index:30}
+  .top .brand{display:flex;align-items:center;gap:14px}
+  .top .mark{width:31px;height:31px;border:1px solid rgba(255,255,255,.4);display:grid;place-items:center;font:600 14px/1 "Noto Serif TC","標楷體",serif;color:#fff}
+  .top .bt2{display:flex;flex-direction:column;gap:4px}
+  .top .school{font-size:10px;line-height:1;letter-spacing:.24em;color:rgba(255,255,255,.6)}
+  .top .sys{font-size:15.5px;line-height:1;font-weight:500;letter-spacing:.08em;color:#fff}
+  .top .tools{display:flex;align-items:center;gap:12px}
+  .top .local{font-size:11.5px;color:rgba(255,255,255,.5)}
+  .top .vsep{width:1px;height:20px;background:rgba(255,255,255,.2)}
+  .top .tbtn{font:inherit;font-size:12.5px;line-height:1;color:rgba(255,255,255,.85);background:transparent;border:1px solid rgba(255,255,255,.3);padding:7px 13px;cursor:pointer}
+  .top .tbtn:hover{background:rgba(255,255,255,.08)}
+  .top .gold{font:inherit;font-size:12.5px;line-height:1;font-weight:500;color:var(--navy);background:var(--gold);border:0;padding:8px 15px;cursor:pointer}
+  .top .gold:hover{background:#e2c273}
+  .top .mob{display:none}
+  /* 文件列 */
+  .docbar{display:flex;align-items:stretch;justify-content:space-between;background:#fff;border-bottom:1px solid var(--bd);position:sticky;top:58px;z-index:29}
+  .tabs{display:flex;overflow-x:auto}
+  .tabs button{font:inherit;display:flex;align-items:center;gap:8px;padding:0 18px;height:50px;background:transparent;border:0;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;color:var(--muted)}
+  .tabs button .no{font:600 10.5px/17px var(--mono);color:var(--muted);border:1px solid var(--bd);padding:0 4px}
+  .tabs button .nm{font-size:13px;line-height:1}
+  .tabs button .dot{width:6px;height:6px;background:transparent}
+  .tabs button .dot.ok{background:var(--green)} .tabs button .dot.part{background:var(--amber)}
+  .tabs button .tag{font-size:10.5px;line-height:1;color:var(--faint);border:1px solid #e0e4e9;padding:3px 5px}
+  .tabs button:hover{background:var(--band)}
+  .tabs button.on{border-bottom-color:var(--navy);background:var(--band);color:var(--navy)}
+  .tabs button.on .nm{font-weight:500}
+  .tabs button.on .no{color:#fff;background:var(--navy);border-color:var(--navy);padding:0 5px}
+  .progress{display:flex;align-items:center;gap:10px;padding:0 20px;border-left:1px solid var(--bd2);flex:none}
+  .progress .pl{font-size:11.5px;color:var(--muted)}
+  .progress .bar{width:96px;height:5px;background:#e4e7ec}
+  .progress .bar div{height:5px;background:var(--navy);width:0}
+  .progress #progPct{font-size:11.5px;font-weight:600;color:var(--navy)}
+  /* 版面 */
+  .app{display:grid;grid-template-columns:var(--left-w) 1fr;align-items:stretch;min-height:calc(100vh - 109px)}
+  .left{background:#fff;border-right:1px solid var(--bd);padding:0 0 30px}
+  .rside{background:var(--canvas);min-width:0;display:flex;flex-direction:column}
+  .ptool{height:44px;background:#eef0f3;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:sticky;top:109px;z-index:5}
+  .ptool .pt-l{display:flex;align-items:center;gap:12px}
+  .ptool .pt{font-size:11.5px;font-weight:500;letter-spacing:.14em;color:var(--navy)}
+  .ptool .pinfo{font-size:11.5px;color:var(--muted)}
+  .zoom{display:flex;align-items:center;gap:8px}
+  .zoom button{font:inherit;font-size:12px;line-height:1;color:var(--muted);border:1px solid var(--bd);background:#fff;padding:5px 10px;cursor:pointer}
+  .zoom #zPct{font-size:12px;color:var(--text);min-width:38px;text-align:center}
+  .paperbox{padding:20px 34px 28px;overflow:hidden}
+  .paperwrap{width:210mm;margin:0 auto;transform-origin:top center}
+  .paperwrap.measuring{transform:none !important}
+  /* 左側表單 */
+  #mform h3{font-size:12px;font-weight:500;letter-spacing:.18em;color:var(--navy);margin:0;padding:16px 24px 13px;background:var(--band);border-top:1px solid #eceff2;border-bottom:1px solid #eceff2;display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  #mform h3:first-child{background:#fff;border-top:0;padding-top:18px}
+  #mform h3 .hl{display:flex;flex-direction:column;gap:7px}
+  #mform h3 .hs{font-size:11.5px;font-weight:400;letter-spacing:0;color:var(--muted2);line-height:1.3}
+  #mform h3 .cnt{font:400 11px/1 var(--mono);color:var(--muted2);letter-spacing:0;white-space:nowrap}
+  #mform h3 .cnt.ok{color:var(--green)} #mform h3 .cnt.bad{font-weight:600;color:var(--red)}
+  #mform .sec{padding:4px 24px 0;margin-bottom:10px}
+  #mform .fld{display:grid;grid-template-columns:104px 1fr;align-items:center;gap:0 14px;padding:11px 0;border-bottom:1px solid var(--row);margin:0}
+  #mform .fld.top{align-items:start}
+  #mform .fld.top>label{padding-top:9px}
+  #mform .fld>label{font-size:12.5px;line-height:1.4;color:var(--muted);margin:0}
+  #mform .fld input[type=text],#mform .fld input[type=number],#mform .fld input[type=tel],#mform .fld input[type=email],#mform .fld select,#mform .fld textarea{
+    font:inherit;font-size:13.5px;width:100%;height:34px;padding:0 10px;border:1px solid var(--bd);border-radius:0;background:#fff;color:var(--text);line-height:1.4;min-height:0
   }
-  .side select:focus,.side input:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 2px rgba(23,48,79,.12)}
-  .dates{display:flex;align-items:center;gap:4px}
-  .dates input{width:0 !important;flex:1 1 0;text-align:center;padding:0 2px !important}
-  .dates input.y{flex:1.3 1 0}
-  .dates span{font-size:13px;color:var(--muted);flex:none}
-  .btn{font:inherit;font-size:14px;padding:9px 16px;border-radius:2px;border:1px solid var(--navy);background:var(--navy);color:#fff;cursor:pointer;line-height:1.3;width:100%}
-  .btn:hover{background:var(--navy-2)}
-  .hint{font-size:12px;color:var(--muted);margin:10px 0 0;line-height:1.6}
+  #mform .fld input[type=number],#mform .fld input[type=tel]{font-family:var(--mono)}
+  #mform .fld textarea{height:auto;min-height:4.2em;padding:9px 10px;line-height:1.8;overflow:hidden}
+  #mform .fld input:focus,#mform .fld textarea:focus,#mform .fld select:focus{border:1.5px solid var(--navy);outline:none;box-shadow:0 0 0 3px rgba(20,36,60,.1)}
+  #mform .fld input::placeholder,#mform .fld textarea::placeholder{color:var(--faint);font-size:13px}
+  #mform .inl{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center}
+  #mform .inl input,#mform .inl select{width:auto !important;flex:1 1 60px;min-width:44px;text-align:center;padding:0 6px !important}
+  #mform .inl span{font-size:12.5px;color:var(--muted);flex:none}
+  #mform .chips{display:flex;flex-wrap:wrap;gap:11px 20px;padding:6px 0}
+  #mform .chips label{display:inline-flex;align-items:center;gap:7px;font-size:13px;line-height:1;cursor:pointer;color:var(--text)}
+  #mform .chips input{appearance:none;-webkit-appearance:none;width:14px;height:14px;border:1.2px solid var(--muted2);background:#fff;margin:0;flex:none}
+  #mform .chips input:checked{border-color:var(--navy);background:var(--navy);box-shadow:inset 0 0 0 2px #fff}
+  #mform .chips.rate{gap:6px;padding:0}
+  #mform .chips.rate label{width:34px;height:30px;display:grid;place-items:center;border:1px solid var(--bd);color:var(--muted);font:400 12.5px/1 var(--mono);gap:0}
+  #mform .chips.rate label input{position:absolute;opacity:0;width:0;height:0}
+  #mform .chips.rate label:has(input:checked){border-color:var(--navy);background:var(--navy);color:#fff;font-weight:500}
+  #mform .note{font-size:11.5px;line-height:1.8;color:#8a7645;background:#fdfaf2;border:1px solid #e0d7bd;border-left:3px solid #b8892e;padding:12px 15px;margin:14px 24px 4px}
+  #mform .scoreband{display:flex;align-items:center;justify-content:space-between;margin:14px 24px 4px;padding:13px 14px;background:var(--navy)}
+  #mform .scoreband .sl{font-size:12.5px;color:rgba(255,255,255,.7)}
+  #mform .scoreband .sr{display:flex;align-items:baseline;gap:14px}
+  #mform .scoreband .sn{font-size:12px;color:rgba(255,255,255,.7)}
+  #mform .scoreband .mtotal{font:600 22px/1 var(--mono);color:var(--gold)}
+  #mform .scoreband .tagr{font-size:12.5px;line-height:1;color:#fff;border:1px solid rgba(216,180,95,.6);padding:5px 9px}
+  #mform .fld.missing-row>label{color:#b06060}
+  #mform .missing{border:1.5px solid var(--red) !important;background:#fdf3f3 !important;outline:0 !important}
+  #mform .chips.missing{outline:1.5px dashed var(--red) !important;outline-offset:4px;border:0 !important;background:transparent !important}
+  #mform .fld .req{grid-column:2;font-size:11.5px;line-height:1.5;color:var(--red);margin-top:6px}
+  /* 通知 */
+  .notice{font-family:var(--ui-font);margin:16px 24px 0;background:#fdfaf2;border:1px solid #e0d7bd;border-left:3px solid #b8892e;padding:13px 15px;font-size:12.5px;line-height:1.7;color:#6b5320}
+  .notice.err{background:#fdf3f3;border-color:#e8c4c4;border-left-color:var(--red);color:#7a2e2e}
+  .notice.err b{color:var(--red)}
+  .notice ul{margin:6px 0 0;padding-left:1.4em} .notice li{margin:0}
+  .notice .x{float:right;cursor:pointer;color:#a09580;margin-left:8px}
+  /* 電子簽名（左側） */
+  #mform .sigbox{border:1px dashed var(--bd);padding:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--band)}
+  #mform .sigbox img{height:60px;max-width:220px;object-fit:contain;background:#fff;border:1px solid #e1e5ea}
+  #mform .sigbox .sigbtn,#mform .sigbox .sigdel{font:inherit;font-size:12px;line-height:1;padding:8px 12px;cursor:pointer}
+  #mform .sigbox .sigbtn{border:1px solid var(--navy);background:#fff;color:var(--navy)}
+  #mform .sigbox .sigdel{border:1px solid var(--bd);background:#fff;color:#8b2c2c}
+  #mform .sigbox input[type=file]{display:none}
+  #mform .sigbox .sighint{font-size:11.5px;color:var(--muted2);width:100%;line-height:1.6}
   /* ---------- 紙張 ---------- */
   main{flex:1;min-width:0;padding:28px 24px 60px;background:#e6e9ed}
   .page{
@@ -106,19 +178,17 @@
   }
   input.u{width:8em}
   input.n{width:3em}
-  input.u,input.n{border-bottom:1px dashed #3a6ea5}
+  input.u,input.n{border-bottom:1px solid #000}
   input.u:focus,input.n:focus,textarea:focus,input.c:focus{background:#fdf8e6}
-  .missing{background:#fbeaea !important;outline:1.5px solid #c94a4a !important;outline-offset:-1px}
-  #mform .chips.missing,.cbgroup.missing{outline:1.5px dashed #c94a4a !important;outline-offset:3px}
+  .page .missing{background:#fdf3f3 !important;outline:1px dashed #c94a4a !important;outline-offset:-1px}
   .notice{font-family:var(--ui-font);max-width:680px;margin:0 auto 12px;background:#fff;border:1px solid var(--bd);border-left:4px solid #b8860b;padding:10px 14px;font-size:13.5px;line-height:1.6;color:var(--text)}
   .notice.err{border-left-color:#b23a3a}
   .notice.err b{color:#b23a3a}
   .notice ul{margin:6px 0 0;padding-left:1.4em}
   .notice li{margin:0}
   .notice .x{float:right;cursor:pointer;color:#888;font-size:16px;margin-left:8px}
-  body:not(.formmode) .notice{max-width:210mm}
   @media print{ .notice{display:none !important} .missing{background:transparent !important;outline:0 !important} }
-  ::placeholder{color:#a3adb8;font-size:.85em}
+  .page ::placeholder{color:#c5ccd3;font-size:.85em}
   input.u.w{width:14em}
   input.u.xl{width:20em}
   input.u.l{text-align:left}
@@ -137,7 +207,8 @@
     overflow:hidden;display:block;line-height:1.6;padding:0 2px;min-height:1.6em;border-radius:0
   }
   textarea.box{border:1px solid var(--line);padding:4pt;min-height:5em}
-  input.u,input.n,input.c,textarea{background:#eaf3ff;border-radius:2px}
+  input.u,input.n,input.c,textarea{background:transparent;border-radius:0}
+  input.u:hover,input.n:hover,input.c:hover,.page textarea:hover{background:#f3f6f9}
 
   /* 勾選方塊 */
   label.cb{display:inline-flex;align-items:center;gap:3px;margin-right:8pt;cursor:pointer;white-space:nowrap}
@@ -156,9 +227,13 @@
   @page{size:A4;margin:20mm}
   @media print{
     body{background:#fff}
-    .side,.top,.no-print{display:none !important}
-    #mform,.mprint{display:none !important}
-    body.formmode .page.active{display:block !important}
+    .top,.docbar,.left,.ptool,.mprint,.notice,.no-print{display:none !important}
+    .app{display:block !important}
+    .rside{display:block !important;background:#fff}
+    .paperbox{padding:0 !important;height:auto !important;overflow:visible !important}
+    .paperwrap{transform:none !important;width:auto !important}
+    #mform{display:none !important}
+    .page.active{display:block !important}
     main{padding:0 !important}
     .page{width:auto;min-height:0;margin:0;padding:0;box-shadow:none}
     .page:not(.active){display:none}
@@ -170,71 +245,41 @@
     table.f td.sec{background:#e4e4e4;print-color-adjust:exact;-webkit-print-color-adjust:exact}
     tr{page-break-inside:avoid}
   }
-  /* ---------- 填寫模式（表單檢視） ---------- */
-  #mform{display:none;max-width:680px;margin:0 auto;background:#fff;border:1px solid var(--bd);padding:8px 24px 28px}
-  body.formmode #mform{display:block}
-  body.formmode .page{display:none}
-  #mform h3{font-size:14px;font-weight:600;color:var(--navy);margin:22px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--navy);letter-spacing:.03em}
-  #mform h3:first-child{margin-top:12px}
-  #mform .fld{margin-bottom:14px}
-  #mform .fld>label{display:block;font-size:13px;color:var(--text);margin-bottom:5px}
-  #mform .fld input[type=text],#mform .fld input[type=number],#mform .fld input[type=tel],#mform .fld input[type=email],#mform .fld select,#mform .fld textarea{
-    font:inherit;font-size:16px;width:100%;padding:8px 10px;border:1px solid var(--bd);border-radius:2px;background:#fff;line-height:1.4;min-height:0;color:var(--text)
-  }
-  #mform .fld textarea{min-height:4.5em;overflow:hidden}
-  #mform .fld input:focus,#mform .fld textarea:focus,#mform .fld select:focus{border-color:var(--navy);outline:none;box-shadow:0 0 0 2px rgba(23,48,79,.12)}
-  #mform .inl{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-  #mform .inl input,#mform .inl select{width:auto !important;flex:1 1 60px;min-width:56px}
-  #mform .inl span{font-size:14px;color:var(--muted)}
-  #mform .chips{display:flex;flex-wrap:wrap;gap:6px 18px}
-  #mform .chips label{display:inline-flex;align-items:center;gap:8px;padding:6px 0;font-size:15px;cursor:pointer}
-  #mform .chips input{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid #7b8794;border-radius:2px;margin:0;flex:none;background:#fff;position:relative}
-  #mform .chips input[type=radio]{border-radius:50%}
-  #mform .chips input:checked{border-color:var(--navy);background:var(--navy)}
-  #mform .chips input[type=checkbox]:checked::after{content:"";position:absolute;left:5px;top:1px;width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
-  #mform .chips input[type=radio]:checked{box-shadow:inset 0 0 0 3px #fff}
-  #mform .note{font-size:13px;color:var(--muted);background:var(--bg-soft);border-left:3px solid #b8c2cc;padding:8px 12px;margin:6px 0 14px}
-  #mform .total{font-size:15px;font-weight:600;color:var(--navy)}
-  /* 電子簽名 */
+  /* 電子簽名（紙本上） */
   .sigslot{display:inline-flex;align-items:center;gap:6px;vertical-align:middle;min-height:12mm}
   .sigslot img{height:12mm;max-width:60mm;object-fit:contain;vertical-align:middle}
-  .sigslot .sigbtn,.sigslot .sigdel{font-family:var(--ui-font);font-size:11px;padding:2px 8px;border-radius:2px;cursor:pointer;line-height:1.5}
+  .sigslot .sigbtn,.sigslot .sigdel{font-family:var(--ui-font);font-size:11px;padding:2px 8px;cursor:pointer;line-height:1.5}
   .sigslot .sigbtn{border:1px dashed #7b8794;background:#f4f6f8;color:#3e4c59}
   .sigslot .sigdel{border:1px solid #c0c7cf;background:#fff;color:#8b2c2c}
   .sigslot input[type=file]{display:none}
-  #mform .sigbox{border:1px dashed var(--bd);padding:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--bg-soft)}
-  #mform .sigbox img{height:60px;max-width:220px;object-fit:contain;background:#fff;border:1px solid #e1e5ea}
-  #mform .sigbox .sigbtn,#mform .sigbox .sigdel{font:inherit;font-size:14px;padding:8px 14px;border-radius:2px;cursor:pointer}
-  #mform .sigbox .sigbtn{border:1px solid var(--navy);background:var(--navy);color:#fff}
-  #mform .sigbox .sigdel{border:1px solid #c0c7cf;background:#fff;color:#8b2c2c}
-  #mform .sigbox input[type=file]{display:none}
-  #mform .sigbox .sighint{font-size:12.5px;color:var(--muted);width:100%}
-  @media print{ .sigslot .sigbtn,.sigslot .sigdel{display:none !important} }
   .mprint{display:none}
-  body.formmode .mprint{display:block;position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--bd);z-index:20}
-  body.formmode .mprint button{width:100%;font:inherit;font-size:16px;padding:12px;border-radius:2px;border:0;background:var(--navy);color:#fff}
-  body.formmode main{padding-bottom:90px}
-  body.formmode .side .blk.common{display:none}
-  @media screen and (max-width:820px){
-    .page{width:100%;padding:12mm 6mm}
-    .top{position:static;height:auto;padding:10px 14px;flex-wrap:wrap}
-    .top .brand{flex-direction:column;gap:0;align-items:flex-start}
-    .top .school{font-size:11px}
-    .top h1{font-size:16px}
-    .top .toplinks button{font-size:12px;padding:4px 8px}
-    .app{display:block}
-    .side{width:auto;position:static;height:auto;border-right:0;border-bottom:1px solid var(--bd);padding:12px 14px 4px}
-    .blk{margin-bottom:12px}
-    .doclist{flex-direction:row;overflow-x:auto;border:0;border-bottom:1px solid var(--bd);border-radius:0;-webkit-overflow-scrolling:touch}
-    .doclist button{border:0;border-bottom:3px solid transparent;padding:8px 10px;white-space:nowrap;flex:none;background:transparent}
-    .doclist button.on{background:transparent;border-bottom-color:var(--navy)}
-    .doclist button:hover{background:transparent}
-    .doclist .tag{display:none}
-    .bt{display:none}
-    .blk.act .hint{display:none}
-    body.formmode .blk.act{display:none}
-    main{padding:12px 8px 60px}
-    #mform{padding:4px 14px 24px}
+  @media print{ .sigslot .sigbtn,.sigslot .sigdel{display:none !important} }
+  /* ---------- 手機 ---------- */
+  @media screen and (max-width:960px){
+    :root{--left-w:1fr}
+    .top{height:auto;padding:10px 14px;position:static}
+    .top .bt2{gap:3px} .top .school{font-size:9.5px;letter-spacing:.16em} .top .sys{font-size:14px}
+    .top .tools{gap:6px} .top .local,.top .vsep,.top .gold{display:none}
+    .top .mob{display:inline-block} .top .tbtn{padding:6px 9px;font-size:12px}
+    .docbar{position:static;flex-direction:column}
+    .tabs button{padding:0 12px;height:46px} .tabs button .tag{display:none}
+    .progress{border-left:0;border-top:1px solid var(--bd2);padding:8px 14px;justify-content:flex-end}
+    .app{display:block;min-height:0}
+    .left{border-right:0}
+    .rside{display:none}
+    body.paper .left{display:none}
+    body.paper .rside{display:flex}
+    .ptool{position:static}
+    .paperbox{padding:12px 8px}
+    .paperwrap{transform-origin:top left;margin:0}
+    .ptool{height:auto;padding:8px 12px}
+    .ptool .pinfo,#zFit{display:none}
+    #mform .fld{grid-template-columns:1fr;gap:5px 0}
+    #mform .fld.top>label{padding-top:0}
+    #mform .fld .req{grid-column:1}
+    .mprint{display:block;position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--bd);z-index:20}
+    .mprint button{width:100%;font:inherit;font-size:15px;font-weight:500;padding:12px;border:0;background:var(--gold);color:var(--navy)}
+    body{padding-bottom:80px}
   }
 </style>
 </head>
@@ -242,69 +287,40 @@
 
 <!-- ============ 系統介面 ============ -->
 <header class="top ui">
-  <div class="brand"><span class="school">國立雲林科技大學</span><h1>技優專班實習申請文件</h1></div>
-  <nav class="toplinks">
-    <button id="btnMode" type="button">填寫模式 / 紙本預覽</button>
-    <button id="btnClear" type="button">清除資料</button>
-  </nav>
+  <div class="brand">
+    <div class="mark">雲</div>
+    <div class="bt2"><span class="school">國立雲林科技大學 技優專班</span><span class="sys">實習申請文件製表系統</span></div>
+  </div>
+  <div class="tools">
+    <span class="local">資料僅存於本機瀏覽器</span>
+    <span class="vsep"></span>
+    <button id="btnMode" class="tbtn mob" type="button">紙本預覽</button>
+    <button id="btnClear" class="tbtn" type="button">清除資料</button>
+    <button id="btnPrint" class="gold" type="button">列印 ／ 匯出 PDF</button>
+  </div>
 </header>
+<nav class="docbar ui">
+  <div class="tabs" id="tabs">
+    <button data-p="p1" class="on" type="button"><span class="no">01</span><span class="nm">實習單位申請表</span><span class="dot"></span></button>
+    <button data-p="p2" type="button"><span class="no">02</span><span class="nm">實務實習同意書</span><span class="dot"></span></button>
+    <button data-p="p3" type="button"><span class="no">03</span><span class="nm">實習意願確認切結書</span><span class="dot"></span></button>
+    <button data-p="p4" type="button"><span class="no">04</span><span class="nm">監護人同意書</span><span class="tag">滿 20 歲免繳</span><span class="dot"></span></button>
+    <button data-p="p5" type="button"><span class="no">05</span><span class="nm">實習計畫書</span><span class="dot"></span></button>
+  </div>
+  <div class="progress"><span class="pl">整體完成度</span><div class="bar"><div id="progFill"></div></div><span id="progPct" class="mono">0%</span></div>
+</nav>
 <div class="app">
-<aside class="side ui">
-  <section class="blk">
-    <h2 class="bt">申請文件</h2>
-    <nav class="doclist" id="tabs">
-      <button data-p="p1" class="on" type="button"><span class="no">1</span><span class="nm">實習單位申請表</span></button>
-      <button data-p="p2" type="button"><span class="no">2</span><span class="nm">實務實習同意書</span></button>
-      <button data-p="p3" type="button"><span class="no">3</span><span class="nm">實習意願確認切結書</span></button>
-      <button data-p="p4" type="button"><span class="no">4</span><span class="nm">監護人同意書</span><span class="tag">滿 20 歲免繳</span></button>
-      <button data-p="p5" type="button"><span class="no">5</span><span class="nm">實習計畫書</span></button>
-    </nav>
-  </section>
-  <section class="blk common">
-    <h2 class="bt">共用資料</h2>
-    <div class="f"><span class="lbl">專班</span>
-      <select id="selProg" data-k="prog">
-        <option value="人工智慧技優專班">人工智慧技優專班</option>
-        <option value="智慧跨域技優專班">智慧跨域技優專班</option>
-      </select></div>
-    <div class="f"><span class="lbl">實習課程</span>
-      <select id="selCourse" data-k="course">
-        <option>資訊實務實習（一）</option>
-        <option>資訊實務實習（二）</option>
-        <option>程式實務實習（一）</option>
-        <option>程式實務實習（二）</option>
-        <option>實務研究實習（一）</option>
-        <option>實務研究實習（二）</option>
-      </select></div>
-    <div class="row2">
-      <div class="f"><span class="lbl">學年度</span><input type="number" data-k="ay" placeholder="例：115"></div>
-      <div class="f"><span class="lbl">學期</span><select data-k="sem"><option value="一">第一學期</option><option value="二">第二學期</option></select></div>
-    </div>
-    <div class="row2">
-      <div class="f"><span class="lbl">學號</span><input type="text" data-k="sid"></div>
-      <div class="f"><span class="lbl">學生姓名</span><input type="text" data-k="name"></div>
-    </div>
-    <div class="row2">
-      <div class="f"><span class="lbl">年級</span><input type="number" data-k="grade" min="1" max="7"></div>
-      <div class="f"></div>
-    </div>
-    <div class="f"><span class="lbl">實習單位名稱</span><input type="text" data-k="org"></div>
-    <div class="f"><span class="lbl">實習開始日（民國）</span>
-      <div class="dates"><input class="y" type="number" data-k="sy" placeholder="年"><span>年</span><input type="number" data-k="sm" placeholder="月" min="1" max="12"><span>月</span><input type="number" data-k="sd" placeholder="日" min="1" max="31"><span>日</span></div></div>
-    <div class="f"><span class="lbl">實習結束日（民國）</span>
-      <div class="dates"><input class="y" type="number" data-k="ey" placeholder="年"><span>年</span><input type="number" data-k="em" placeholder="月" min="1" max="12"><span>月</span><input type="number" data-k="ed" placeholder="日" min="1" max="31"><span>日</span></div></div>
-    <div class="f"><span class="lbl">文件日期（民國，各文件底下之日期）</span>
-      <div class="dates"><input class="y" type="number" data-k="dy" placeholder="年"><span>年</span><input type="number" data-k="dm" placeholder="月" min="1" max="12"><span>月</span><input type="number" data-k="dd" placeholder="日" min="1" max="31"><span>日</span></div></div>
-  </section>
-  <section class="blk act">
-    <button id="btnPrint" class="btn" type="button">列印 / 匯出 PDF（目前文件）</button>
-    <p class="hint">所有欄位皆為必填，填妥後始可列印；列印對話框中選擇「另存為 PDF」即可匯出。簽章欄位請列印後親筆簽章，或於簽章處上傳簽名圖檔。資料僅儲存於本機瀏覽器。</p>
-  </section>
-</aside>
-<main>
-<div class="notice" id="guardNote" hidden>提醒：<b>監護人同意書</b>僅未滿 20 歲之學生需繳交；填表時已滿 20 歲者可免繳此份文件。<span class="x" title="關閉">✕</span></div>
+<div class="left ui" id="left">
+<div class="notice" id="guardNote" hidden><b>監護人同意書</b>僅未滿 20 歲之學生需繳交；填表時已滿 20 歲者可免繳此份文件。<span class="x" title="關閉">✕</span></div>
 <div class="notice err" id="valMsg" hidden></div>
-<div id="mform" class="ui"></div>
+<div id="mform"></div>
+</div>
+<main class="rside" id="right">
+<div class="ptool ui">
+  <div class="pt-l"><span class="pt">紙本預覽</span><span class="pinfo" id="pinfo">A4 縱向 ・ 字級自動配頁</span></div>
+  <div class="zoom"><button id="zOut" type="button">－</button><span id="zPct" class="mono">100%</span><button id="zIn" type="button">＋</button><button id="zFit" type="button">符合寬度</button></div>
+</div>
+<div class="paperbox" id="paperbox"><div class="paperwrap" id="paperwrap">
 
 <!-- ============ 1. 實習單位申請表 ============ -->
 <section class="page active" id="p1">
@@ -511,51 +527,53 @@
   </div>
 </section>
 
-<div class="mprint ui"><button id="btnPrint2" type="button">列印 / 匯出 PDF（目前文件）</button></div>
+</div></div>
 </main>
 </div>
+<div class="mprint ui"><button id="btnPrint2" type="button">列印 ／ 匯出 PDF（目前文件）</button></div>
 
 <script>
 (function(){
   const KEY='nyust-intern-forms-v1';
   let data={};
+  let zoom=null, zoomManual=false, stTimer=null;
   try{ data=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ data={}; }
 
   /* ---- 手機填寫模式：欄位定義（與紙本共用 data-k） ---- */
   const T=(k,l,o={})=>({t:'text',k,l,...o}), N=(k,l)=>({t:'text',k,l,num:true}),
         A=(k,l)=>({t:'area',k,l}), C=(l,items)=>({t:'chips',l,items}),
-        D=(p,l)=>({t:'date',p,l}), H=l=>({t:'h',l}), NOTE=l=>({t:'note',l}), R=(k,l)=>({t:'rate',k,l});
+        D=(p,l)=>({t:'date',p,l}), H=(l,sub)=>({t:'h',l,sub}), NOTE=l=>({t:'note',l}), R=(k,l)=>({t:'rate',k,l});
   const chk=(k,l)=>({k,l});
   const HRS={t:'row',l:'實習時數',items:[N('hrsWeek','每週小時'),N('hrsTotal','總時數')]};
-  const COMMON=[H('基本資料（五份表單共用）'),
+  const COMMON=[H('共用資料','會自動帶入全部五份文件'),
     {t:'sel',k:'prog',l:'專班',opts:['人工智慧技優專班','智慧跨域技優專班']},
     {t:'sel',k:'course',l:'實習課程',opts:['資訊實務實習（一）','資訊實務實習（二）','程式實務實習（一）','程式實務實習（二）','實務研究實習（一）','實務研究實習（二）']},
     {t:'row',l:'學年度／學期',items:[N('ay','學年度'),{t:'sel',k:'sem',opts:[['一','第一學期'],['二','第二學期']]}]},
     T('sid','學號'),T('name','學生姓名'),N('grade','年級'),T('org','實習單位名稱'),
     D('s','實習開始日（民國）'),D('e','實習結束日（民國）'),D('d','文件日期（民國）')];
   const SPEC={
-    p1:[...COMMON,H('實習單位申請表'),T('dept','系級（自動帶入，可修改）'),T('orgAddr','公司地址'),T('siteAddr','實習地址'),T('boss','負責人'),T('contact','聯絡人'),T('contactTel','聯絡電話',{tel:true}),T('taxId','統一編號或營業登記證'),T('industry','產業類型'),D('ev','評估日期（民國）'),
+    p1:[...COMMON,H('壹、實習單位資料'),T('dept','系級（自動帶入，可修改）'),T('orgAddr','公司地址'),T('siteAddr','實習地址'),T('boss','負責人'),T('contact','聯絡人'),T('contactTel','聯絡電話',{tel:true}),T('taxId','統一編號或營業登記證'),T('industry','產業類型'),D('ev','評估日期（民國）'),
       C('評估方式',[chk('ev1','實地訪視'),chk('ev2','電話訪談'),chk('ev3','與實習機構人員面談'),chk('ev4','其他')]),T('ev4t','評估方式：其他（說明）'),
-      H('一、實習工作概況'),A('jobDesc','實習工作內容'),N('hrsWeek','實習時間（時／週）'),
+      H('貳、實習工作概況'),A('jobDesc','實習工作內容'),N('hrsWeek','實習時間（時／週）'),
       C('提供薪資額度',[chk('payYes','是'),chk('payNo','否')]),T('payAmt','薪資額度'),
       C('住宿',[chk('dorm','供宿'),chk('dormFree','無需負擔房租'),chk('dormPay','負擔房租'),chk('dormSelf','自理')]),T('dormAmt','房租（元／月）'),T('dormDist','與公司距離'),T('dormNote','住宿其他說明'),
       C('保險事宜',[chk('ins1','勞工保險、全民健康保險'),chk('ins2','提撥退休金'),chk('ins3','團保'),chk('ins4','其他'),chk('insNone','皆無提供')]),T('ins4t','保險：其他（說明）'),
       C('膳食',[chk('mealSelf','自理'),chk('mealCo','公司提供')]),
-      H('二、實習廠商資格評估'),C('廠商資格',[chk('q1','營業登記／行號登記'),chk('q2','台灣工藝之家認證'),chk('q3','上市上櫃公司'),chk('q4','設計獎認證'),chk('q5','其他')]),T('q5t','廠商資格：其他（說明）'),
+      H('參、實習廠商資格評估'),C('廠商資格',[chk('q1','營業登記／行號登記'),chk('q2','台灣工藝之家認證'),chk('q3','上市上櫃公司'),chk('q4','設計獎認證'),chk('q5','其他')]),T('q5t','廠商資格：其他（說明）'),
       C('實習機會',[chk('op1','學生申請'),chk('op2','老師推介'),chk('op3','廠商公開招募')]),
-      H('三、實習工作評估'),NOTE('極佳：5、佳：4、可：3、不佳：2、極不佳：1'),
+      H('肆、實習工作評估','極佳 5 → 極不佳 1'),
       R('r1','工作環境及安全性'),R('r2','工作專業性'),R('r3','體力負荷（5 負荷適合 → 1 負荷太重）'),R('r4','實習待遇'),R('r5','膳宿及保險'),R('r6','培訓計畫'),R('r7','合作理念'),
       {t:'total'},C('評估結論',[chk('rec1','推薦實習（21分(含)以上）'),chk('rec2','不推薦實習（20分(含)以下）')]),
       A('remark','補充說明（請說明推薦、不推薦的理由）'),C('最終評估結論',[chk('fin1','推薦實習'),chk('fin2','不推薦實習')]),
       {t:'sig',k:'sigTutor',l:'導師簽章（選填）'},NOTE('系所單位主管簽章：列印後親筆簽章。')],
-    p2:[...COMMON,H('實務實習同意書'),HRS,T('rep','代表人姓名'),{t:'sig',k:'sigRep',l:'代表人簽章（選填）'},T('repTitle','職稱'),T('repTel','連絡電話',{tel:true}),NOTE('立同意書單位＝實習單位名稱（自動帶入）。代表人簽章：列印後蓋章。')],
-    p3:[...COMMON,H('實習意願確認切結書'),C('確認事項',[chk('agree','本人同意於該學年度學期至實習單位進行實習')]),
+    p2:[...COMMON,H('壹、實習單位代表'),HRS,T('rep','代表人姓名'),{t:'sig',k:'sigRep',l:'代表人簽章（選填）'},T('repTitle','職稱'),T('repTel','連絡電話',{tel:true}),NOTE('立同意書單位＝實習單位名稱（自動帶入）。代表人簽章：列印後蓋章。')],
+    p3:[...COMMON,H('壹、切結事項'),C('確認事項',[chk('agree','本人同意於該學年度學期至實習單位進行實習')]),
       {t:'row',l:'尚未修習之學分',items:[N('reqCr','必修尚餘'),N('eleCr','選修尚餘')]},NOTE('立切結書人簽名：列印後親筆簽名。')],
-    p4:[...COMMON,H('監護人同意書'),NOTE('僅未滿 20 歲之學生需繳交此份；已滿 20 歲者可免繳。'),T('siteAddr','實習地點地址'),HRS,A('jobDesc','實習工作內容'),
+    p4:[...COMMON,H('壹、實習與監護人資料'),T('siteAddr','實習地點地址'),HRS,A('jobDesc','實習工作內容'),
       T('payAmt','薪資（元）'),C('薪資單位',[chk('payMonth','月'),chk('payHour','時')]),C('實習期間提供',[chk('giveMeal','膳食'),chk('giveDorm','住宿')]),
       T('guardian','監護人姓名'),T('guardianTel','監護人連絡電話',{tel:true}),A('guardianNote','監護人意見'),NOTE('監護人簽章：列印後加蓋監護人私章。')],
-    p5:[...COMMON,H('實習計畫書'),T('phone','學生手機',{tel:true}),T('email','學生EMAIL',{email:true}),T('orgAddr','實習機構地址'),T('contact','實習單位連絡人'),T('contactTel','實習單位連絡人電話',{tel:true}),HRS,
-      A('planTopic','1. 實習主題'),A('planIntro','2. 實習單位簡介'),A('planMotive','3. 實習動機與目的'),A('planContent','4. 預計實習內容'),A('planResult','5. 預期成果'),{t:'sig',k:'sigTeacher',l:'授課教師簽章（選填）'},NOTE('主任簽章：列印後親筆簽章。')]
+    p5:[...COMMON,H('壹、聯絡與機構資料'),T('phone','學生手機',{tel:true}),T('email','學生EMAIL',{email:true}),T('orgAddr','實習機構地址'),T('contact','實習單位連絡人'),T('contactTel','實習單位連絡人電話',{tel:true}),HRS,
+      H('貳、實習計畫內容','空白不夠時列印會自動配頁'),A('planTopic','1. 實習主題'),A('planIntro','2. 實習單位簡介'),A('planMotive','3. 實習動機與目的'),A('planContent','4. 預計實習內容'),A('planResult','5. 預期成果'),{t:'sig',k:'sigTeacher',l:'授課教師簽章（選填）'},NOTE('主任簽章：列印後親筆簽章。')]
   };
   function inp(f){
     const type=f.num?'number':f.tel?'tel':f.email?'email':'text';
@@ -564,23 +582,23 @@
   const sel=(k,opts)=>`<select data-k="${k}">${opts.map(o=>Array.isArray(o)?`<option value="${o[0]}">${o[1]}</option>`:`<option>${o}</option>`).join('')}</select>`;
   function render(f){
     switch(f.t){
-      case 'h': return `<h3>${f.l}</h3>`;
+      case 'h': return `</div><h3><span class="hl"><span>${f.l}</span>${f.sub?`<span class="hs">${f.sub}</span>`:''}</span><span class="cnt"></span></h3><div class="sec">`;
       case 'note': return `<div class="note">${f.l}</div>`;
       case 'text': return `<div class="fld"><label>${f.l}</label>${inp(f)}</div>`;
-      case 'area': return `<div class="fld"><label>${f.l}</label><textarea data-k="${f.k}" rows="3"></textarea></div>`;
+      case 'area': return `<div class="fld top"><label>${f.l}</label><textarea data-k="${f.k}" rows="2"></textarea></div>`;
       case 'sel': return `<div class="fld"><label>${f.l}</label>${sel(f.k,f.opts)}</div>`;
       case 'row': return `<div class="fld"><label>${f.l}</label><div class="inl">${f.items.map(i=>i.t==='sel'?sel(i.k,i.opts):inp(i)).join('')}</div></div>`;
       case 'date': return `<div class="fld"><label>${f.l}</label><div class="inl"><input type="number" inputmode="numeric" data-k="${f.p}y" placeholder="年"><span>年</span><input type="number" inputmode="numeric" data-k="${f.p}m" placeholder="月"><span>月</span><input type="number" inputmode="numeric" data-k="${f.p}d" placeholder="日"><span>日</span></div></div>`;
-      case 'chips': return `<div class="fld"><label>${f.l}</label><div class="chips">${f.items.map(i=>`<label><input type="checkbox" data-k="${i.k}">${i.l}</label>`).join('')}</div></div>`;
-      case 'rate': return `<div class="fld"><label>${f.l}</label><div class="chips">${[5,4,3,2,1].map(v=>`<label><input type="radio" name="m_${f.k}" value="${v}" data-k="${f.k}">${v}</label>`).join('')}</div></div>`;
-      case 'sig': return `<div class="fld"><label>${f.l}</label><div class="sigbox" data-sig="${f.k}"></div></div>`;
-      case 'total': return `<div class="fld total">總分：<span class="mtotal">0</span> 分（21 分(含)以上為推薦實習）</div>`;
+      case 'chips': return `<div class="fld top"><label>${f.l}</label><div class="chips">${f.items.map(i=>`<label><input type="checkbox" data-k="${i.k}">${i.l}</label>`).join('')}</div></div>`;
+      case 'rate': return `<div class="fld"><label>${f.l}</label><div class="chips rate">${[5,4,3,2,1].map(v=>`<label><input type="radio" name="m_${f.k}" value="${v}" data-k="${f.k}">${v}</label>`).join('')}</div></div>`;
+      case 'sig': return `<div class="fld top"><label>${f.l}</label><div class="sigbox" data-sig="${f.k}"></div></div>`;
+      case 'total': return `<div class="scoreband"><span class="sl">七項合計</span><span class="sr"><span class="sn">21 分以上為推薦實習</span><b class="mtotal">0</b><span class="tagr">推薦實習</span></span></div>`;
     }
     return '';
   }
   const mform=document.getElementById('mform');
   function buildMobile(p){
-    mform.innerHTML=(SPEC[p]||[]).map(render).join('');
+    mform.innerHTML=('<div class="sec">'+(SPEC[p]||[]).map(render).join('')+'</div>').replace('<div class="sec"></div>','');
     mform.querySelectorAll('[data-k]').forEach(el=>{
       const k=el.dataset.k;
       if(k in data) setVal(el,data[k]);
@@ -589,6 +607,7 @@
     mform.querySelectorAll('textarea').forEach(grow);
     total();
     renderSigs();
+    updateCounts();
   }
 
   /* ---- 評分列（5~1 單選） ---- */
@@ -622,8 +641,8 @@
 
   /* ---- 專班／課程文字 ---- */
   function refreshText(){
-    const prog=data.prog||document.getElementById('selProg').value;
-    const course=data.course||document.getElementById('selCourse').value;
+    const prog=data.prog||'人工智慧技優專班';
+    const course=data.course||'資訊實務實習（一）';
     const cbase=course.replace(/實習.*$/,'');   // 資訊實務 / 程式實務 / 實務研究
     document.querySelectorAll('.prog').forEach(e=>e.textContent=prog);
     document.querySelectorAll('.course').forEach(e=>e.textContent=course);
@@ -640,6 +659,7 @@
     ['r1','r2','r3','r4','r5','r6','r7'].forEach(k=>{ s+=Number(data[k]||0); });
     document.getElementById('total').value=s||'';
     document.querySelectorAll('.mtotal').forEach(e=>e.textContent=s);
+    document.querySelectorAll('.scoreband .tagr').forEach(e=>{ e.textContent=s>=21?'推薦實習':'不推薦實習'; e.style.borderColor=s>=21?'rgba(216,180,95,.6)':'rgba(255,255,255,.35)'; });
   }
 
   /* ---- 初始化 ---- */
@@ -656,7 +676,7 @@
     const v=getVal(el);
     if(el.type==='radio' && v===undefined) return;
     data[k]=v;
-    document.querySelectorAll(`[data-k="${k}"].missing`).forEach(e=>{ if(v!=null&&String(v).trim()!=='') e.classList.remove('missing'); });
+    document.querySelectorAll(`[data-k="${k}"].missing`).forEach(e=>{ if(v!=null&&String(v).trim()!==''){ e.classList.remove('missing'); const row=e.closest('#mform .fld'); if(row){ row.classList.remove('missing-row'); const r=row.querySelector('.req'); if(r) r.remove(); } } });
     if(el.type==='checkbox'||el.type==='radio'){ const g=el.closest('.chips.missing')||el.closest('td.missing')||el.closest('p.missing'); if(g) g.classList.remove('missing'); }
     if(k==='dept') data.deptManual=true;
     sync(k,v,el);
@@ -665,6 +685,7 @@
     if(/^r[1-7]$/.test(k)) total();
     save();
     scheduleFit();
+    scheduleStatus();
   }
 
   /* ---- 自動調整字級，讓每份文件填滿頁面（依實際字型量測） ---- */
@@ -673,6 +694,7 @@
   function contentH(sec){ const r=document.createRange(); r.selectNodeContents(sec); return r.getBoundingClientRect().height; }
   function fit(id){
     const sec=document.getElementById(id), cfg=FIT[id]; if(!sec||!cfg) return;
+    const wrap=document.getElementById('paperwrap'); if(wrap) wrap.classList.add('measuring');
     sec.classList.add('measure');
     const limit=cfg.pages*PAGE_H-cfg.safety;
     const test=f=>{ sec.style.fontSize=f+'pt'; sec.querySelectorAll('textarea').forEach(grow); return contentH(sec)<=limit; };
@@ -680,7 +702,9 @@
     if(test(hi)) best=hi; else { for(let i=0;i<9;i++){ const mid=(lo+hi)/2; if(test(mid)){best=mid;lo=mid;} else hi=mid; } }
     sec.style.fontSize=best.toFixed(2)+'pt';
     sec.classList.remove('measure');
+    if(wrap) wrap.classList.remove('measuring');
     sec.querySelectorAll('textarea').forEach(grow);
+    if(typeof applyZoom==='function') try{ applyZoom(); }catch(e){}
   }
   function activeId(){ const a=document.querySelector('.page.active'); return a?a.id:'p1'; }
   let fitTimer=null;
@@ -695,6 +719,92 @@
   refreshText(); total(); save();
   document.querySelectorAll('textarea').forEach(grow);
 
+  /* ---- 必填檢查 ---- */
+  const OPT=new Set(['ev4t','ins4t','q5t','dormAmt','dormDist','dormNote','dormFree','dormPay','payAmt','remark','guardianNote','deptManual']);
+  const GROUPS={
+    p1:[['評估方式',['ev1','ev2','ev3','ev4']],['提供薪資額度',['payYes','payNo']],['住宿',['dorm','dormSelf']],['保險事宜',['ins1','ins2','ins3','ins4','insNone']],['膳食',['mealSelf','mealCo']],['廠商資格',['q1','q2','q3','q4','q5']],['實習機會',['op1','op2','op3']],['評估結論',['rec1','rec2']],['最終評估結論',['fin1','fin2']]],
+    p3:[['確認事項（本人同意）',['agree']]],
+    p4:[['薪資單位（月／時）',['payMonth','payHour']]]
+  };
+  const LABEL={};
+  Object.values(SPEC).flat().forEach(f=>{
+    if(f.t==='text'||f.t==='area'||f.t==='sel') LABEL[f.k]=f.l;
+    if(f.t==='row') f.items.forEach(i=>{ if(i.k) LABEL[i.k]=(f.l+'：'+(i.l||'')); });
+    if(f.t==='date'){ LABEL[f.p+'y']=f.l; LABEL[f.p+'m']=f.l; LABEL[f.p+'d']=f.l; }
+  });
+  LABEL.sem='學期'; LABEL.evY=LABEL.evM=LABEL.evD='評估日期（民國）';
+  const filled=v=>!(v==null||String(v).trim()==='');
+  function reqKeys(p){
+    const sec=document.getElementById(p); const keys=[]; const seen=new Set();
+    sec.querySelectorAll('[data-k]').forEach(el=>{
+      const k=el.dataset.k; if(seen.has(k)||OPT.has(k)) return;
+      if(el.type==='checkbox'||el.type==='radio'||el.readOnly) return;
+      seen.add(k); keys.push(k);
+    });
+    return keys;
+  }
+  function missingList(p){
+    const missing=[];
+    reqKeys(p).forEach(k=>{ if(!filled(data[k])) missing.push({k,l:LABEL[k]||k}); });
+    if(p==='p1' && data.payYes && !filled(data.payAmt)) missing.push({k:'payAmt',l:'薪資額度（勾選「是」需填寫）'});
+    if(p==='p1' && data.ev4 && !filled(data.ev4t)) missing.push({k:'ev4t',l:'評估方式：其他（說明）'});
+    (GROUPS[p]||[]).forEach(([l,keys])=>{ if(!keys.some(k=>data[k])) missing.push({group:keys,l:l+'（至少勾選一項）'}); });
+    return missing;
+  }
+  function docStatus(p){
+    const keys=reqKeys(p); const n=keys.length+(GROUPS[p]||[]).length;
+    const miss=missingList(p).length; const done=Math.max(0,n-miss);
+    return {n,done,miss,state:miss===0?'ok':(done>0?'part':'none')};
+  }
+  function updateStatus(){
+    let N=0,D=0;
+    ['p1','p2','p3','p4','p5'].forEach(p=>{
+      const st=docStatus(p); N+=st.n; D+=st.done;
+      const dot=document.querySelector('#tabs button[data-p='+p+'] .dot'); if(dot){ dot.className='dot '+(st.state==='none'?'':st.state); }
+    });
+    const pct=N?Math.round(D/N*100):0;
+    document.getElementById('progFill').style.width=pct+'%';
+    document.getElementById('progPct').textContent=pct+'%';
+    updateCounts();
+  }
+  function updateCounts(){
+    const p=activeId(); const spec=SPEC[p]||[];
+    const hs=mform.querySelectorAll('h3'); let hi=-1; const groups=[];
+    spec.forEach(f=>{
+      if(f.t==='h'){ hi++; groups[hi]={n:0,miss:0}; return; }
+      if(hi<0) return;
+      const g=groups[hi]; const add=(k)=>{ if(OPT.has(k)) return; g.n++; if(!filled(data[k])) g.miss++; };
+      if(f.t==='text'||f.t==='area'||f.t==='sel') add(f.k);
+      if(f.t==='row') f.items.forEach(i=>add(i.k));
+      if(f.t==='date'){ g.n++; if(!(filled(data[f.p+'y'])&&filled(data[f.p+'m'])&&filled(data[f.p+'d']))) g.miss++; }
+      if(f.t==='chips'){ const gr=(GROUPS[p]||[]).find(([l,keys])=>keys.join()===f.items.map(i=>i.k).join()); if(gr){ g.n++; if(!gr[1].some(k=>data[k])) g.miss++; } }
+    });
+    hs.forEach((h,i)=>{ const g=groups[i]; const c=h.querySelector('.cnt'); if(!c||!g||!g.n){ if(c) c.textContent=''; return; }
+      c.textContent=g.miss?`${g.n-g.miss} / ${g.n} 缺 ${g.miss} 項`:`${g.n} / ${g.n}`; c.className='cnt '+(g.miss?'bad':'ok'); });
+  }
+  function scheduleStatus(){ clearTimeout(stTimer); stTimer=setTimeout(updateStatus,200); }
+  function validate(p){
+    const sec=document.getElementById(p);
+    document.querySelectorAll('.missing').forEach(e=>e.classList.remove('missing'));
+    document.querySelectorAll('.missing-row').forEach(e=>e.classList.remove('missing-row'));
+    document.querySelectorAll('#mform .req').forEach(e=>e.remove());
+    const missing=missingList(p);
+    const box=document.getElementById('valMsg');
+    if(!missing.length){ box.hidden=true; return true; }
+    missing.forEach(m=>{
+      if(m.k){ document.querySelectorAll(`[data-k="${m.k}"]`).forEach(e=>{ e.classList.add('missing'); const row=e.closest('#mform .fld'); if(row&&!row.querySelector('.req')){ row.classList.add('missing-row'); const r=document.createElement('span'); r.className='req'; r.textContent='此欄未填，本份文件尚無法列印。'; row.appendChild(r); } }); }
+      else m.group.forEach(k=>document.querySelectorAll(`[data-k="${k}"]`).forEach(e=>{ const g=e.closest('.chips')||e.closest('td')||e.closest('p'); if(g) g.classList.add('missing'); }));
+    });
+    const labels=[...new Set(missing.map(m=>m.l))];
+    box.innerHTML='<b>尚有 '+labels.length+' 項未填寫，填完才能列印：</b><ul>'+labels.map(l=>'<li>'+l+'</li>').join('')+'</ul>';
+    box.hidden=false;
+    const first=mform.querySelector('.missing')||sec.querySelector('.missing'); (first||box).scrollIntoView({behavior:'smooth',block:'center'});
+    if(first&&first.focus) try{ first.focus({preventScroll:true}); }catch(e){}
+    return false;
+  }
+  updateStatus();
+  document.getElementById('guardNote').querySelector('.x').addEventListener('click',()=>{ document.getElementById('guardNote').hidden=true; });
+
   /* ---- 分頁 ---- */
   const tabs=document.querySelectorAll('#tabs button');
   function show(p){
@@ -703,6 +813,8 @@
     document.querySelectorAll('.page.active textarea').forEach(grow);
     fit(p);
     buildMobile(p);
+    document.getElementById('pinfo').textContent='A4 縱向 ・ '+(p==='p1'?'共 2 頁':'1 頁')+' ・ 字級自動配頁';
+    applyZoom();
     document.getElementById('guardNote').hidden=(p!=='p4');
     document.getElementById('valMsg').hidden=true;
     document.querySelectorAll('.missing').forEach(e=>e.classList.remove('missing'));
@@ -714,11 +826,25 @@
   show(last && document.getElementById(last) ? last : 'p1');
 
   /* ---- 填寫模式 / 紙本預覽 ---- */
-  let mode=null; try{ mode=localStorage.getItem(KEY+':mode'); }catch(e){}
-  if(!mode) mode=(window.innerWidth<=820)?'form':'paper';
-  function setMode(m){ mode=m; document.body.classList.toggle('formmode',m==='form'); try{ localStorage.setItem(KEY+':mode',m); }catch(e){} if(m==='form') mform.querySelectorAll('textarea').forEach(grow); else document.querySelectorAll('.page.active textarea').forEach(grow); }
-  setMode(mode);
+  let mode='form';
+  function setMode(m){ mode=m; document.body.classList.toggle('paper',m==='paper'); document.getElementById('btnMode').textContent=(m==='paper'?'返回填寫':'紙本預覽'); if(m==='paper'){ fit(activeId()); applyZoom(); document.querySelectorAll('.page.active textarea').forEach(grow); } else mform.querySelectorAll('textarea').forEach(grow); window.scrollTo({top:0}); }
   document.getElementById('btnMode').addEventListener('click',()=>setMode(mode==='form'?'paper':'form'));
+
+  /* ---- 預覽縮放 ---- */
+  function fitZoom(){ const box=document.getElementById('paperbox'); const w=box.clientWidth-(window.innerWidth<=960?16:68); return Math.max(.4,Math.min(1.25,w/(210/25.4*96))); }
+  function applyZoom(){
+    const wrap=document.getElementById('paperwrap'), box=document.getElementById('paperbox');
+    if(!zoomManual||zoom==null) zoom=fitZoom();
+    wrap.style.transform='scale('+zoom+')';
+    const pg=document.querySelector('.page.active'); const h=pg?pg.offsetHeight:0;
+    box.style.height=(h*zoom+48)+'px';
+    document.getElementById('zPct').textContent=Math.round(zoom*100)+'%';
+  }
+  document.getElementById('zIn').addEventListener('click',()=>{ zoomManual=true; zoom=Math.min(1.5,(zoom||1)+.1); applyZoom(); });
+  document.getElementById('zOut').addEventListener('click',()=>{ zoomManual=true; zoom=Math.max(.3,(zoom||1)-.1); applyZoom(); });
+  document.getElementById('zFit').addEventListener('click',()=>{ zoomManual=false; applyZoom(); });
+  window.addEventListener('resize',()=>{ if(!zoomManual) applyZoom(); });
+  applyZoom();
 
   /* ---- 列印 ---- */
   /* ---- 電子簽名（選填）：上傳圖片即印出，未上傳則列印後手簽 ---- */
@@ -727,7 +853,7 @@
     const has=!!data[k];
     return (has?`<img src="${data[k]}" alt="簽名">`:'')+
       (mobile?`<span class="sighint">可上傳簽名圖片（PNG／JPG，建議白底或透明背景）；不上傳則列印後親筆簽章。</span>`:'')+
-      (has?`<button type="button" class="sigdel">移除</button>`:`<button type="button" class="sigbtn">${mobile?'上傳簽名圖片':'上傳電子簽名'}</button>`)+
+      (has?`<button type="button" class="sigdel">移除</button>`:`<button type="button" class="sigbtn">${mobile?'上傳簽名圖檔':'上傳簽名'}</button>`)+
       `<input type="file" accept="image/*">`;
   }
   function renderSigs(){
@@ -758,58 +884,13 @@
   }
   renderSigs();
 
-  /* ---- 必填檢查 ---- */
-  const OPT=new Set(['ev4t','ins4t','q5t','dormAmt','dormDist','dormNote','dormFree','dormPay','payAmt','remark','guardianNote','deptManual']);
-  const GROUPS={
-    p1:[['評估方式',['ev1','ev2','ev3','ev4']],['提供薪資額度',['payYes','payNo']],['住宿',['dorm','dormSelf']],['保險事宜',['ins1','ins2','ins3','ins4','insNone']],['膳食',['mealSelf','mealCo']],['廠商資格',['q1','q2','q3','q4','q5']],['實習機會',['op1','op2','op3']],['評估結論',['rec1','rec2']],['最終評估結論',['fin1','fin2']]],
-    p3:[['確認事項（本人同意）',['agree']]],
-    p4:[['薪資單位（月／時）',['payMonth','payHour']]]
-  };
-  const LABEL={};
-  Object.values(SPEC).flat().forEach(f=>{
-    if(f.t==='text'||f.t==='area'||f.t==='sel') LABEL[f.k]=f.l;
-    if(f.t==='row') f.items.forEach(i=>{ if(i.k) LABEL[i.k]=(f.l+'：'+(i.l||'')); });
-    if(f.t==='date'){ LABEL[f.p+'y']=f.l; LABEL[f.p+'m']=f.l; LABEL[f.p+'d']=f.l; }
-  });
-  LABEL.sem='學期'; LABEL.evY=LABEL.evM=LABEL.evD='評估日期（民國）';
-  function validate(p){
-    const sec=document.getElementById(p);
-    document.querySelectorAll('.missing').forEach(e=>e.classList.remove('missing'));
-    const missing=[]; const seen=new Set();
-    sec.querySelectorAll('[data-k]').forEach(el=>{
-      const k=el.dataset.k; if(seen.has(k)||OPT.has(k)) return;
-      if(el.type==='checkbox'||el.type==='radio'||el.readOnly) return;
-      seen.add(k);
-      const v=data[k]; if(v==null||String(v).trim()==='') missing.push({k,l:LABEL[k]||k});
-    });
-    if(p==='p1' && data.payYes && !(data.payAmt&&String(data.payAmt).trim())) missing.push({k:'payAmt',l:'薪資額度（勾選「是」需填寫）'});
-    if(p==='p1' && data.ev4 && !(data.ev4t&&String(data.ev4t).trim())) missing.push({k:'ev4t',l:'評估方式：其他（說明）'});
-    (GROUPS[p]||[]).forEach(([l,keys])=>{ if(!keys.some(k=>data[k])) missing.push({group:keys,l:l+'（至少勾選一項）'}); });
-    const box=document.getElementById('valMsg');
-    if(!missing.length){ box.hidden=true; return true; }
-    missing.forEach(m=>{
-      if(m.k){ document.querySelectorAll(`[data-k="${m.k}"]`).forEach(e=>e.classList.add('missing')); }
-      else m.group.forEach(k=>document.querySelectorAll(`[data-k="${k}"]`).forEach(e=>{ const g=e.closest('.chips')||e.closest('td')||e.closest('p'); if(g) g.classList.add('missing'); }));
-    });
-    const labels=[...new Set(missing.map(m=>m.l))];
-    box.innerHTML='<b>尚有 '+labels.length+' 項未填寫，填完才能列印：</b><ul>'+labels.map(l=>'<li>'+l+'</li>').join('')+'</ul>';
-    box.hidden=false;
-    const root=document.body.classList.contains('formmode')?mform:sec;
-    const first=root.querySelector('.missing'); (first||box).scrollIntoView({behavior:'smooth',block:'center'});
-    if(first&&first.focus) try{ first.focus({preventScroll:true}); }catch(e){}
-    return false;
-  }
-  document.getElementById('guardNote').querySelector('.x').addEventListener('click',()=>{ document.getElementById('guardNote').hidden=true; });
-
   function doPrint(){
     if(!validate(activeId())) return;
-    document.body.classList.remove('formmode');
     fit(activeId());
     document.querySelectorAll('.page.active textarea').forEach(grow);
     setTimeout(()=>{ window.print(); },50);
   }
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>fit(activeId()));
-  window.addEventListener('afterprint',()=>{ if(mode==='form') document.body.classList.add('formmode'); });
   document.getElementById('btnPrint').addEventListener('click',doPrint);
   document.getElementById('btnPrint2').addEventListener('click',doPrint);
   document.getElementById('btnClear').addEventListener('click',()=>{
