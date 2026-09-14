@@ -160,10 +160,9 @@
   #mform .sigbox .sighint{font-size:11.5px;color:var(--muted2);width:100%;line-height:1.6}
   /* ---------- 紙張 ---------- */
   main{flex:1;min-width:0;padding:28px 24px 60px;background:#e6e9ed}
-  .page{
-    width:210mm;min-height:297mm;margin:0 auto;background:var(--paper);
-    padding:20mm;box-shadow:0 2px 12px rgba(0,0,0,.12);display:none
-  }
+  .page{width:210mm;margin:0 auto;display:none}
+  .sheet{width:210mm;min-height:297mm;background:var(--paper);padding:20mm;box-shadow:0 2px 12px rgba(0,0,0,.12)}
+  .sheet+.sheet{margin-top:24px}
   .page.active{display:block}
   h2.t{ text-align:center;font-size:18pt;font-weight:bold;margin:0 0 6pt;letter-spacing:1px }
   h2.t small{display:block;font-size:12pt;font-weight:normal}
@@ -180,7 +179,7 @@
   .sig p{text-align:left}
   .course,.cbase{white-space:nowrap}
   .page.tight{line-height:1.35}
-  .page.measure{display:block !important;position:absolute !important;left:-9999px !important;top:0 !important;width:210mm !important;padding:20mm !important;min-height:0 !important}
+  .page.measure{display:block !important;position:absolute !important;left:-9999px !important;top:0 !important;width:210mm !important}
   .page.tight p{margin-bottom:3pt}
   .page.tight ol.n>li{margin-bottom:2pt}
   .page.tight .sig{margin-top:8pt}
@@ -248,7 +247,7 @@
   .muted{color:#666;font-size:10pt}
 
   /* ---------- 列印 ---------- */
-  @page{size:A4;margin:20mm}
+  @page{size:A4;margin:0}
   @media print{
     body{background:#fff}
     .top,.docbar,.left,.ptool,.mprint,.notice,.no-print{display:none !important}
@@ -259,12 +258,14 @@
     #mform{display:none !important}
     .page.active{display:block !important}
     main{padding:0 !important}
-    .page{width:auto;min-height:0;margin:0;padding:0;box-shadow:none}
+    .page{width:210mm;margin:0;padding:0}
+    .sheet{width:210mm;height:297mm;min-height:297mm;padding:20mm;margin:0;box-shadow:none;overflow:hidden;break-after:page;page-break-after:always}
+    .sheet:last-child{break-after:auto;page-break-after:auto}
     .page:not(.active){display:none}
-    input.u,input.n,input.c,textarea{background:transparent}
+    .page input.u,.page input.n,.page input.c,.page textarea{background:transparent !important}
     input.u,input.n{border-bottom:1px solid #000;border-radius:0}
     input.c,textarea{border-radius:0}
-    ::placeholder{color:transparent}
+    .page ::placeholder{color:transparent !important}
     table.f th,table.f td.h{background:#f2f2f2;print-color-adjust:exact;-webkit-print-color-adjust:exact}
     table.f td.sec{background:#e4e4e4;print-color-adjust:exact;-webkit-print-color-adjust:exact}
     tr{page-break-inside:avoid}
@@ -363,6 +364,7 @@
 
 <!-- ============ 1. 實習單位申請表 ============ -->
 <section class="page active" id="p1">
+<div class="sheet">
   <h2 class="t">國立雲林科技大學<span class="prog"></span>實習單位申請表</h2>
   <table class="f">
     <colgroup><col style="width:28mm"><col style="width:38mm"><col style="width:16mm"><col style="width:30mm"><col style="width:22mm"><col></colgroup>
@@ -405,7 +407,12 @@
       <label class="cb"><input type="checkbox" data-k="mealCo">公司提供</label>
     </td></tr>
 
-    </tbody><tbody class="grp"><tr class="secrow"><td class="sec" colspan="6">二、實習廠商資格評估</td></tr>
+    </tbody></table>
+</div>
+<div class="sheet">
+  <table class="f">
+    <colgroup><col style="width:28mm"><col style="width:38mm"><col style="width:16mm"><col style="width:30mm"><col style="width:22mm"><col></colgroup>
+    <tbody class="grp"><tr class="secrow"><td class="sec" colspan="6">二、實習廠商資格評估</td></tr>
     <tr><th>廠商資格</th><td colspan="5">
       <label class="cb"><input type="checkbox" data-k="q1">營業登記／行號登記</label>
       <label class="cb"><input type="checkbox" data-k="q2">台灣工藝之家認證</label>
@@ -446,10 +453,12 @@
       </div>
     </td></tr>
   </tbody></table>
+</div>
 </section>
 
 <!-- ============ 2. 實務實習同意書 ============ -->
 <section class="page tight" id="p2">
+<div class="sheet">
   <h2 class="t">國立雲林科技大學<span class="prog"></span><small style="font-size:14pt;font-weight:bold;margin-top:2pt">實務實習同意書</small></h2>
   <p class="ind" style="margin-top:12pt">茲同意國立雲林科技大學<span class="prog"></span>學生 <input class="u" data-k="name">（學號：<input class="u" data-k="sid">）至本單位實習，且願合作培育跨領域之技優人才，並提供實習學生校外專業技能之訓練、實習之機會，從而使實習學生將來順利成為業界之最適用的人才。</p>
   <p class="ind">實習期間該學生須接受實習單位之指揮與監督，遵照機構既定的工作規則辦理。</p>
@@ -479,10 +488,12 @@
     <p>連絡電話：　<input class="u w l" data-k="repTel"></p>
   </div>
   <p class="date">中　華　民　國　<input class="n" data-k="dy">　年　<input class="n" data-k="dm">　月　<input class="n" data-k="dd">　日<span class="hintx no-print">須為開學日以前</span></p>
+</div>
 </section>
 
 <!-- ============ 3. 實習意願確認切結書 ============ -->
 <section class="page" id="p3">
+<div class="sheet">
   <h2 class="t">國立雲林科技大學<span class="cbase"></span>實習意願確認切結書</h2>
   <p class="ind" style="margin-top:10pt;line-height:1.8">本人 <input class="u" data-k="name">（學號：<input class="u" data-k="sid">）參與國立雲林科技大學<span class="prog"></span> <input class="n" data-k="ay"> 學年度<span class="course"></span>課程</p>
   <p style="line-height:1.8">本人確認以下事項（請勾選）：</p>
@@ -501,10 +512,12 @@
     <p>學號：<input class="u w l" data-k="sid"></p>
   </div>
   <p class="date">中　華　民　國　<input class="n" data-k="dy">　年　<input class="n" data-k="dm">　月　<input class="n" data-k="dd">　日<span class="hintx no-print">須為開學日以前</span></p>
+</div>
 </section>
 
 <!-- ============ 4. 監護人同意書 ============ -->
 <section class="page tight" id="p4">
+<div class="sheet">
   <h2 class="t">國立雲林科技大學學生至產業實務實習 監護人同意書<small>監護人同意書（學校留存聯）</small></h2>
   <p class="ind" style="margin-top:10pt">茲同意本人子弟 <input class="u" data-k="name">（學號：<input class="u" data-k="sid">，現就讀<span class="prog"></span> <input class="n" data-k="grade" style="width:2em"> 年級）參加產業實務實習，並保證督促其確實遵守下列事項：</p>
   <ol class="n">
@@ -536,10 +549,12 @@
     <p>監護人意見：<textarea placeholder="點此填寫" rows="2" data-k="guardianNote" style="display:inline-block;width:100%;border-bottom:1px solid #000"></textarea></p>
   </div>
   <p class="date">中　華　民　國　<input class="n" data-k="dy">　年　<input class="n" data-k="dm">　月　<input class="n" data-k="dd">　日<span class="hintx no-print">須為開學日以前</span></p>
+</div>
 </section>
 
 <!-- ============ 5. 實習計畫書 ============ -->
 <section class="page" id="p5">
+<div class="sheet">
   <h2 class="t" style="font-size:15pt">國立雲林科技大學<span class="prog"></span> <span class="course"></span> 實習計畫書</h2>
   <table class="f" style="margin-top:8pt">
     <colgroup><col style="width:42mm"><col></colgroup>
@@ -564,6 +579,7 @@
     <p style="width:50%">授課教師簽章：<span class="sigslot" data-sig="sigTeacher"></span></p>
     <p style="width:50%">主任簽章：<span class="sigslot" data-sig="sigChief"></span></p>
   </div>
+</div>
 </section>
 
 </div></div>
@@ -695,9 +711,16 @@
     // 系級：專班 + 年級
     const dept=prog+(data.grade?(data.grade+'年級'):'');
     if(!data.deptManual){ data.dept=dept; sync('dept',dept,null); }
-    document.title='實習申請文件 - '+prog;
+    updateTitle();
   }
 
+  /* ---- 視窗標題＝列印 PDF 預設檔名：學號-姓名-文件名稱 ---- */
+  const DOCNAME={p1:'實習單位申請表',p2:'實務實習同意書',p3:'實習意願確認切結書',p4:'監護人同意書',p5:'實習計畫書'};
+  function updateTitle(){
+    const a=document.querySelector('.page.active'); const p=a?a.id:'p1';
+    const sid=String(data.sid||'').trim(), name=String(data.name||'').trim();
+    document.title=(sid&&name)?`${sid}-${name}-${DOCNAME[p]}`:('實習申請文件 - '+(data.prog||'技優專班'));
+  }
   /* ---- 總分 ---- */
   function total(){
     let s=0;
@@ -727,6 +750,7 @@
     sync(k,v,el);
     if(el.tagName==='TEXTAREA') grow(el);
     if(k==='prog'||k==='course'||k==='grade') refreshText();
+    if(k==='sid'||k==='name') updateTitle();
     if(/^r[1-7]$/.test(k)) total();
     save();
     scheduleFit();
@@ -735,8 +759,8 @@
 
   /* ---- 自動調整字級，讓每份文件填滿頁面（依實際字型量測） ---- */
   const PAGE_H=257/25.4*96; /* A4 高 297mm − 上下邊界各 20mm */
-  const FIT={p1:{pages:2,max:14,min:9,safety:140},p2:{pages:1,max:12.5,min:8.5,safety:14},p3:{pages:1,max:13,min:8.5,safety:14},p4:{pages:1,max:12.5,min:8.5,safety:14},p5:{pages:1,max:13,min:9,safety:14}};
-  function contentH(sec){ const r=document.createRange(); r.selectNodeContents(sec); return r.getBoundingClientRect().height; }
+  const FIT={p1:{pages:1,max:14,min:9,safety:14},p2:{pages:1,max:12.5,min:8.5,safety:14},p3:{pages:1,max:13,min:8.5,safety:14},p4:{pages:1,max:12.5,min:8.5,safety:14},p5:{pages:1,max:13,min:9,safety:14}};
+  function contentH(sec){ let h=0; sec.querySelectorAll('.sheet').forEach(sh=>{ const r=document.createRange(); r.selectNodeContents(sh); h=Math.max(h,r.getBoundingClientRect().height); }); return h; }
   function fit(id){
     const sec=document.getElementById(id), cfg=FIT[id]; if(!sec||!cfg) return;
     const wrap=document.getElementById('paperwrap'); if(wrap) wrap.classList.add('measuring');
@@ -860,6 +884,7 @@
     document.querySelectorAll('.page.active textarea').forEach(grow);
     fit(p);
     buildMobile(p);
+    updateTitle();
     document.getElementById('pinfo').textContent='A4 縱向 ・ '+(p==='p1'?'共 2 頁':'1 頁')+' ・ 字級自動配頁';
     applyZoom();
     document.getElementById('guardNote').hidden=(p!=='p4');
@@ -935,6 +960,7 @@
 
   function doPrint(){
     if(!validate(activeId())) return;
+    updateTitle();
     fit(activeId());
     document.querySelectorAll('.page.active textarea').forEach(grow);
     setTimeout(()=>{ window.print(); },50);
