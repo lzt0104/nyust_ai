@@ -247,6 +247,10 @@
   }
   /* 電子簽名（紙本上） */
   .sigslot{display:inline-flex;align-items:center;gap:6px;vertical-align:middle;min-height:12mm}
+  .sigfield{display:inline-flex;align-items:flex-end;gap:6px;vertical-align:bottom;border-bottom:1px solid #000;min-width:14em;min-height:1.5em}
+  .sigfield input.u{border-bottom:0;width:auto;flex:1 1 8em;min-width:6em}
+  .sigfield.hasimg input.u{display:none}
+  .sigfield .sigslot{min-height:0}
   .sigslot img{height:12mm;max-width:60mm;object-fit:contain;vertical-align:middle}
   .sigslot .sigbtn,.sigslot .sigdel{font-family:var(--ui-font);font-size:11px;padding:2px 8px;cursor:pointer;line-height:1.5}
   .sigslot .sigbtn{border:1px dashed #7b8794;background:#f4f6f8;color:#3e4c59}
@@ -435,7 +439,7 @@
   </ol>
   <div class="sig">
     <p>立同意書單位：<input class="u xl l" data-k="org"></p>
-    <p>代　表　人：<input class="u w l" data-k="rep">　<span class="sigslot" data-sig="sigRep"></span>（簽章）</p>
+    <p>代　表　人：<span class="sigfield"><input class="u w l" data-k="rep"><span class="sigslot" data-sig="sigRep"></span></span>　（簽章）</p>
     <p>職　　　稱：<input class="u w l" data-k="repTitle"></p>
     <p>連絡電話：　<input class="u w l" data-k="repTel"></p>
   </div>
@@ -492,7 +496,7 @@
   <p style="margin-top:12pt;padding-left:1em">此　致</p>
   <p style="padding-left:2em">國立雲林科技大學 <span class="prog"></span></p>
   <div class="sig">
-    <p>監護人姓名：<input class="u w l" data-k="guardian">　<span class="sigslot" data-sig="sigGuardian"></span>（簽章）<span class="muted">　請加蓋監護人私章</span></p>
+    <p>監護人姓名：<span class="sigfield"><input class="u w l" data-k="guardian"><span class="sigslot" data-sig="sigGuardian"></span></span>　（簽章）<span class="muted">　請加蓋監護人私章</span></p>
     <p>連絡電話：　<input class="u w l" data-k="guardianTel"></p>
     <p>監護人意見：<textarea placeholder="點此填寫" rows="2" data-k="guardianNote" style="display:inline-block;width:100%;border-bottom:1px solid #000"></textarea></p>
   </div>
@@ -866,6 +870,7 @@
     document.querySelectorAll('[data-sig]').forEach(slot=>{
       const k=slot.dataset.sig, mobile=slot.classList.contains('sigbox');
       slot.innerHTML=sigHTML(k,mobile);
+      const sf=slot.closest('.sigfield'); if(sf) sf.classList.toggle('hasimg',!!data[k]);
       const file=slot.querySelector('input[type=file]');
       const btn=slot.querySelector('.sigbtn'); if(btn) btn.addEventListener('click',()=>file.click());
       const del=slot.querySelector('.sigdel'); if(del) del.addEventListener('click',()=>{ delete data[k]; save(); renderSigs(); scheduleFit(); scheduleStatus(); });
