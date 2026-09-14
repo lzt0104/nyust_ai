@@ -403,7 +403,7 @@
     </td></tr>
     <tr><td colspan="6" style="height:22mm;vertical-align:top">
       <div style="display:flex;padding:4pt 10pt">
-        <span style="width:50%">導師簽章：<span class="sigslot" data-sig="sigTutor"></span></span><span style="width:50%">系所單位主管簽章：</span>
+        <span style="width:50%">導師簽章：<span class="sigslot" data-sig="sigTutor"></span></span><span style="width:50%">系所單位主管簽章：<span class="sigslot" data-sig="sigDirector"></span></span>
       </div>
     </td></tr>
   </tbody></table>
@@ -458,7 +458,7 @@
   <p style="margin-top:18pt">此致</p>
   <p style="padding-left:2em">國立雲林科技大學<span class="prog"></span></p>
   <div class="sig" style="padding-left:2em;margin-top:24pt">
-    <p>立切結書人：<input class="u l" data-k="name" style="width:10em">　<span style="white-space:nowrap">（簽名：<span style="display:inline-block;width:8em;border-bottom:1px solid #000">&nbsp;</span>）</span></p>
+    <p>立切結書人：<input class="u l" data-k="name" style="width:10em">　<span style="white-space:nowrap">（簽名：<span class="sigslot" data-sig="sigStudent" style="display:inline-flex;min-width:8em;border-bottom:1px solid #000;min-height:1.4em;vertical-align:bottom"></span>）</span></p>
     <p>學號：<input class="u w l" data-k="sid"></p>
   </div>
   <p class="date">中　華　民　國　<input class="n" data-k="dy">　年　<input class="n" data-k="dm">　月　<input class="n" data-k="dd">　日</p>
@@ -492,7 +492,7 @@
   <p style="margin-top:12pt;padding-left:1em">此　致</p>
   <p style="padding-left:2em">國立雲林科技大學 <span class="prog"></span></p>
   <div class="sig">
-    <p>監護人姓名：<input class="u w l" data-k="guardian">　（簽章）<span class="muted">　請加蓋監護人私章</span></p>
+    <p>監護人姓名：<input class="u w l" data-k="guardian">　<span class="sigslot" data-sig="sigGuardian"></span>（簽章）<span class="muted">　請加蓋監護人私章</span></p>
     <p>連絡電話：　<input class="u w l" data-k="guardianTel"></p>
     <p>監護人意見：<textarea placeholder="點此填寫" rows="2" data-k="guardianNote" style="display:inline-block;width:100%;border-bottom:1px solid #000"></textarea></p>
   </div>
@@ -523,7 +523,7 @@
   </table>
   <div class="sig" style="margin-top:12pt;display:flex;padding:0 10pt">
     <p style="width:50%">授課教師簽章：<span class="sigslot" data-sig="sigTeacher"></span></p>
-    <p style="width:50%">主任簽章：</p>
+    <p style="width:50%">主任簽章：<span class="sigslot" data-sig="sigChief"></span></p>
   </div>
 </section>
 
@@ -537,6 +537,7 @@
   const KEY='nyust-intern-forms-v1';
   let data={};
   let zoom=null, zoomManual=false, stTimer=null;
+  const SIG_FOR={rep:'sigRep',guardian:'sigGuardian'}; /* 有簽名圖檔時，對應的姓名欄可不填 */
   try{ data=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ data={}; }
 
   /* ---- 手機填寫模式：欄位定義（與紙本共用 data-k） ---- */
@@ -565,15 +566,15 @@
       R('r1','工作環境及安全性'),R('r2','工作專業性'),R('r3','體力負荷（5 負荷適合 → 1 負荷太重）'),R('r4','實習待遇'),R('r5','膳宿及保險'),R('r6','培訓計畫'),R('r7','合作理念'),
       {t:'total'},C('評估結論',[chk('rec1','推薦實習（21分(含)以上）'),chk('rec2','不推薦實習（20分(含)以下）')]),
       A('remark','補充說明（請說明推薦、不推薦的理由）'),C('最終評估結論',[chk('fin1','推薦實習'),chk('fin2','不推薦實習')]),
-      {t:'sig',k:'sigTutor',l:'導師簽章（選填）'},NOTE('系所單位主管簽章：列印後親筆簽章。')],
+      {t:'sig',k:'sigTutor',l:'導師簽章（選填）'},{t:'sig',k:'sigDirector',l:'系所單位主管簽章（選填）'}],
     p2:[...COMMON,H('壹、實習單位代表'),HRS,T('rep','代表人姓名'),{t:'sig',k:'sigRep',l:'代表人簽章（選填）'},T('repTitle','職稱'),T('repTel','連絡電話',{tel:true}),NOTE('立同意書單位＝實習單位名稱（自動帶入）。代表人簽章：列印後蓋章。')],
     p3:[...COMMON,H('壹、切結事項'),C('確認事項',[chk('agree','本人同意於該學年度學期至實習單位進行實習')]),
-      {t:'row',l:'尚未修習之學分',items:[N('reqCr','必修尚餘'),N('eleCr','選修尚餘')]},NOTE('立切結書人簽名：列印後親筆簽名。')],
+      {t:'row',l:'尚未修習之學分',items:[N('reqCr','必修尚餘'),N('eleCr','選修尚餘')]},{t:'sig',k:'sigStudent',l:'立切結書人簽名（選填）'}],
     p4:[...COMMON,H('壹、實習與監護人資料'),T('siteAddr','實習地點地址'),HRS,A('jobDesc','實習工作內容'),
       T('payAmt','薪資（元）'),C('薪資單位',[chk('payMonth','月'),chk('payHour','時')]),C('實習期間提供',[chk('giveMeal','膳食'),chk('giveDorm','住宿')]),
-      T('guardian','監護人姓名'),T('guardianTel','監護人連絡電話',{tel:true}),A('guardianNote','監護人意見'),NOTE('監護人簽章：列印後加蓋監護人私章。')],
+      T('guardian','監護人姓名'),{t:'sig',k:'sigGuardian',l:'監護人簽章（選填）'},T('guardianTel','監護人連絡電話',{tel:true}),A('guardianNote','監護人意見')],
     p5:[...COMMON,H('壹、聯絡與機構資料'),T('phone','學生手機',{tel:true}),T('email','學生EMAIL',{email:true}),T('orgAddr','實習機構地址'),T('contact','實習單位連絡人'),T('contactTel','實習單位連絡人電話',{tel:true}),HRS,
-      H('貳、實習計畫內容','空白不夠時列印會自動配頁'),A('planTopic','1. 實習主題'),A('planIntro','2. 實習單位簡介'),A('planMotive','3. 實習動機與目的'),A('planContent','4. 預計實習內容'),A('planResult','5. 預期成果'),{t:'sig',k:'sigTeacher',l:'授課教師簽章（選填）'},NOTE('主任簽章：列印後親筆簽章。')]
+      H('貳、實習計畫內容','空白不夠時列印會自動配頁'),A('planTopic','1. 實習主題'),A('planIntro','2. 實習單位簡介'),A('planMotive','3. 實習動機與目的'),A('planContent','4. 預計實習內容'),A('planResult','5. 預期成果'),{t:'sig',k:'sigTeacher',l:'授課教師簽章（選填）'},{t:'sig',k:'sigChief',l:'主任簽章（選填）'}]
   };
   function inp(f){
     const type=f.num?'number':f.tel?'tel':f.email?'email':'text';
@@ -605,7 +606,7 @@
     mform.innerHTML=('<div class="sec">'+specFor(p).map(render).join('')+'</div>').replace('<div class="sec"></div>','');
     mform.querySelectorAll('[data-k]').forEach(el=>{
       const k=el.dataset.k;
-      if(k in data) setVal(el,data[k]);
+      if(k in data) setVal(el,data[k]); else if(el.tagName==='SELECT'){ data[k]=el.value; }
       el.addEventListener('input',onChange); el.addEventListener('change',onChange);
     });
     mform.querySelectorAll('textarea').forEach(grow);
@@ -738,6 +739,7 @@
   });
   LABEL.sem='學期'; LABEL.evY=LABEL.evM=LABEL.evD='評估日期（民國）';
   const filled=v=>!(v==null||String(v).trim()==='');
+  const filledKey=k=>filled(data[k])||(SIG_FOR[k]&&!!data[SIG_FOR[k]]);
   function reqKeys(p){
     const sec=document.getElementById(p); const keys=[]; const seen=new Set();
     sec.querySelectorAll('[data-k]').forEach(el=>{
@@ -749,7 +751,7 @@
   }
   function missingList(p){
     const missing=[];
-    reqKeys(p).forEach(k=>{ if(!filled(data[k])) missing.push({k,l:LABEL[k]||k}); });
+    reqKeys(p).forEach(k=>{ if(!filledKey(k)) missing.push({k,l:(LABEL[k]||k)+(SIG_FOR[k]?'（或上傳簽名）':'')}); });
     if(p==='p1' && data.payYes && !filled(data.payAmt)) missing.push({k:'payAmt',l:'薪資額度（勾選「是」需填寫）'});
     if(p==='p1' && data.ev4 && !filled(data.ev4t)) missing.push({k:'ev4t',l:'評估方式：其他（說明）'});
     (GROUPS[p]||[]).forEach(([l,keys])=>{ if(!keys.some(k=>data[k])) missing.push({group:keys,l:l+'（至少勾選一項）'}); });
@@ -777,7 +779,7 @@
     spec.forEach(f=>{
       if(f.t==='h'){ hi++; groups[hi]={n:0,miss:0}; return; }
       if(hi<0) return;
-      const g=groups[hi]; const add=(k)=>{ if(OPT.has(k)) return; g.n++; if(!filled(data[k])) g.miss++; };
+      const g=groups[hi]; const add=(k)=>{ if(OPT.has(k)) return; g.n++; if(!filledKey(k)) g.miss++; };
       if(f.t==='text'||f.t==='area'||f.t==='sel') add(f.k);
       if(f.t==='row') f.items.forEach(i=>add(i.k));
       if(f.t==='date'){ g.n++; if(!(filled(data[f.p+'y'])&&filled(data[f.p+'m'])&&filled(data[f.p+'d']))) g.miss++; }
@@ -852,11 +854,11 @@
 
   /* ---- 列印 ---- */
   /* ---- 電子簽名（選填）：上傳圖片即印出，未上傳則列印後手簽 ---- */
-  const SIGKEYS=['sigTutor','sigRep','sigTeacher'];
+  const SIGKEYS=['sigTutor','sigRep','sigTeacher','sigDirector','sigChief','sigGuardian','sigStudent'];
   function sigHTML(k, mobile){
     const has=!!data[k];
     return (has?`<img src="${data[k]}" alt="簽名">`:'')+
-      (mobile?`<span class="sighint">可上傳簽名圖片（PNG／JPG，建議白底或透明背景）；不上傳則列印後親筆簽章。</span>`:'')+
+      (mobile?`<span class="sighint">可上傳簽名圖檔（PNG／JPG，建議白底或透明背景）；上傳後對應姓名欄可免填，不上傳則列印後親筆簽章。</span>`:'')+
       (has?`<button type="button" class="sigdel">移除</button>`:`<button type="button" class="sigbtn">${mobile?'上傳簽名圖檔':'上傳簽名'}</button>`)+
       `<input type="file" accept="image/*">`;
   }
@@ -866,7 +868,7 @@
       slot.innerHTML=sigHTML(k,mobile);
       const file=slot.querySelector('input[type=file]');
       const btn=slot.querySelector('.sigbtn'); if(btn) btn.addEventListener('click',()=>file.click());
-      const del=slot.querySelector('.sigdel'); if(del) del.addEventListener('click',()=>{ delete data[k]; save(); renderSigs(); scheduleFit(); });
+      const del=slot.querySelector('.sigdel'); if(del) del.addEventListener('click',()=>{ delete data[k]; save(); renderSigs(); scheduleFit(); scheduleStatus(); });
       file.addEventListener('change',()=>{ const f=file.files[0]; if(f) loadSig(k,f); });
     });
   }
@@ -879,7 +881,7 @@
         const c=document.createElement('canvas'); c.width=w; c.height=h; c.getContext('2d').drawImage(img,0,0,w,h);
         let url; try{ url=c.toDataURL('image/png'); }catch(e){ url=rd.result; }
         if(url.length>600000){ alert('圖片過大，請使用較小的簽名圖片（約 1000×400 像素以內）。'); return; }
-        data[k]=url; save(); renderSigs(); scheduleFit();
+        data[k]=url; save(); renderSigs(); scheduleFit(); scheduleStatus();
       };
       img.onerror=()=>alert('無法讀取這個圖片檔，請改用 PNG 或 JPG。');
       img.src=rd.result;
