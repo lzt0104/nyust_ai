@@ -188,7 +188,7 @@
   .notice li{margin:0}
   .notice .x{float:right;cursor:pointer;color:#888;font-size:16px;margin-left:8px}
   @media print{ .notice{display:none !important} .missing{background:transparent !important;outline:0 !important} }
-  .page ::placeholder{color:#c5ccd3;font-size:.85em}
+  .page ::placeholder{color:#a3adb8;font-size:.85em}
   input.u.w{width:14em}
   input.u.xl{width:20em}
   input.u.l{text-align:left}
@@ -207,8 +207,8 @@
     overflow:hidden;display:block;line-height:1.6;padding:0 2px;min-height:1.6em;border-radius:0
   }
   textarea.box{border:1px solid var(--line);padding:4pt;min-height:5em}
-  input.u,input.n,input.c,textarea{background:transparent;border-radius:0}
-  input.u:hover,input.n:hover,input.c:hover,.page textarea:hover{background:#f3f6f9}
+  input.u,input.n,input.c,.page textarea{background:#f3f6f9;border-radius:0}
+  input.u:hover,input.n:hover,input.c:hover,.page textarea:hover{background:#e9eef4}
 
   /* 勾選方塊 */
   label.cb{display:inline-flex;align-items:center;gap:3px;margin-right:8pt;cursor:pointer;white-space:nowrap}
@@ -550,7 +550,7 @@
     {t:'sel',k:'course',l:'實習課程',opts:['資訊實務實習（一）','資訊實務實習（二）','程式實務實習（一）','程式實務實習（二）','實務研究實習（一）','實務研究實習（二）']},
     {t:'row',l:'學年度／學期',items:[N('ay','學年度'),{t:'sel',k:'sem',opts:[['一','第一學期'],['二','第二學期']]}]},
     T('sid','學號'),T('name','學生姓名'),N('grade','年級'),T('org','實習單位名稱'),
-    D('s','實習開始日（民國）'),D('e','實習結束日（民國）'),D('d','文件日期（民國）')];
+    D('s','實習開始日（民國）'),D('e','實習結束日（民國）'),D('d','文件日期（民國）'),{t:'note',l:'其餘欄位請直接在右側文件上點選填寫；淡灰底的位置即為可填寫處。',desktop:true}];
   const SPEC={
     p1:[...COMMON,H('壹、實習單位資料'),T('dept','系級（自動帶入，可修改）'),T('orgAddr','公司地址'),T('siteAddr','實習地址'),T('boss','負責人'),T('contact','聯絡人'),T('contactTel','聯絡電話',{tel:true}),T('taxId','統一編號或營業登記證'),T('industry','產業類型'),D('ev','評估日期（民國）'),
       C('評估方式',[chk('ev1','實地訪視'),chk('ev2','電話訪談'),chk('ev3','與實習機構人員面談'),chk('ev4','其他')]),T('ev4t','評估方式：其他（說明）'),
@@ -583,7 +583,7 @@
   function render(f){
     switch(f.t){
       case 'h': return `</div><h3><span class="hl"><span>${f.l}</span>${f.sub?`<span class="hs">${f.sub}</span>`:''}</span><span class="cnt"></span></h3><div class="sec">`;
-      case 'note': return `<div class="note">${f.l}</div>`;
+      case 'note': return (f.desktop&&isMobile())?'':`<div class="note">${f.l}</div>`;
       case 'text': return `<div class="fld"><label>${f.l}</label>${inp(f)}</div>`;
       case 'area': return `<div class="fld top"><label>${f.l}</label><textarea data-k="${f.k}" rows="2"></textarea></div>`;
       case 'sel': return `<div class="fld"><label>${f.l}</label>${sel(f.k,f.opts)}</div>`;
@@ -597,8 +597,12 @@
     return '';
   }
   const mform=document.getElementById('mform');
+  const isMobile=()=>window.innerWidth<=960;
+  let builtMode=null;
+  function specFor(p){ return isMobile()?(SPEC[p]||[]):COMMON; }
   function buildMobile(p){
-    mform.innerHTML=('<div class="sec">'+(SPEC[p]||[]).map(render).join('')+'</div>').replace('<div class="sec"></div>','');
+    builtMode=isMobile();
+    mform.innerHTML=('<div class="sec">'+specFor(p).map(render).join('')+'</div>').replace('<div class="sec"></div>','');
     mform.querySelectorAll('[data-k]').forEach(el=>{
       const k=el.dataset.k;
       if(k in data) setVal(el,data[k]);
@@ -768,7 +772,7 @@
     updateCounts();
   }
   function updateCounts(){
-    const p=activeId(); const spec=SPEC[p]||[];
+    const p=activeId(); const spec=specFor(p);
     const hs=mform.querySelectorAll('h3'); let hi=-1; const groups=[];
     spec.forEach(f=>{
       if(f.t==='h'){ hi++; groups[hi]={n:0,miss:0}; return; }
@@ -843,7 +847,7 @@
   document.getElementById('zIn').addEventListener('click',()=>{ zoomManual=true; zoom=Math.min(1.5,(zoom||1)+.1); applyZoom(); });
   document.getElementById('zOut').addEventListener('click',()=>{ zoomManual=true; zoom=Math.max(.3,(zoom||1)-.1); applyZoom(); });
   document.getElementById('zFit').addEventListener('click',()=>{ zoomManual=false; applyZoom(); });
-  window.addEventListener('resize',()=>{ if(!zoomManual) applyZoom(); });
+  window.addEventListener('resize',()=>{ if(!zoomManual) applyZoom(); if(builtMode!==null&&builtMode!==isMobile()) buildMobile(activeId()); });
   applyZoom();
 
   /* ---- 列印 ---- */
