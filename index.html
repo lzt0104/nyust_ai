@@ -121,13 +121,19 @@
   #mform .chips.missing{outline:1.5px dashed var(--red) !important;outline-offset:4px;border:0 !important;background:transparent !important}
   #mform .fld .req{grid-column:2;font-size:11.5px;line-height:1.5;color:var(--red);margin-top:6px}
   /* 教學 */
-  .guide{font-family:var(--ui-font);margin:16px 24px 0;border:1px solid var(--bd);background:#fff}
-  .guide summary{list-style:none;cursor:pointer;display:flex;flex-direction:column;gap:4px;padding:12px 15px;background:var(--band);border-left:3px solid var(--navy)}
+  .guide{font-family:var(--ui-font);margin:16px 24px 0;border:2px solid var(--gold);background:#fff}
+  .guide summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:12px 15px;background:var(--gold)}
   .guide summary::-webkit-details-marker{display:none}
-  .guide summary::after{content:"展開 ▾";font-size:11px;color:var(--muted2);margin-top:2px}
-  .guide[open] summary::after{content:"收合 ▴"}
-  .guide .gt{font-size:12.5px;font-weight:500;letter-spacing:.1em;color:var(--navy)}
-  .guide .gs{font-size:11.5px;color:var(--muted2)}
+  .guide .gi{width:26px;height:26px;border-radius:50%;background:var(--navy);color:var(--gold);display:grid;place-items:center;font:700 15px/1 var(--mono);flex:none}
+  .guide .gtx{display:flex;flex-direction:column;gap:3px;flex:1}
+  .guide .gt{font-size:14.5px;font-weight:700;color:var(--navy)}
+  .guide .gs{font-size:11.5px;color:#4a3d1a}
+  .guide .garrow::after{content:"▾";font-size:14px;color:var(--navy)}
+  .guide[open] .garrow::after{content:"▴"}
+  .guide.flash{animation:gflash 1.2s ease 2}
+  @keyframes gflash{0%,100%{box-shadow:0 0 0 0 rgba(216,180,95,0)}50%{box-shadow:0 0 0 6px rgba(216,180,95,.6)}}
+  .gbtn{font-family:var(--ui-font);font-size:11px;line-height:1;padding:3px 8px;border:1px solid var(--navy);background:var(--gold);color:var(--navy);cursor:pointer;vertical-align:middle;margin-left:6px;white-space:nowrap}
+  @media print{ .gbtn{display:none !important} }
   .guide .gb{padding:12px 15px 16px}
   .guide .gp{font-size:12.5px;margin:0 0 10px;color:var(--text);line-height:1.7}
   .guide .gl{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:14px}
@@ -332,8 +338,8 @@
 <div class="left ui" id="left">
 <div class="notice" id="guardNote" hidden><b>監護人同意書</b>僅未滿 20 歲之學生需繳交；填表時已滿 20 歲者可免繳此份文件。<span class="x" title="關閉">✕</span></div>
 <div class="notice err" id="valMsg" hidden></div>
-<details class="guide" id="creditGuide" hidden>
-  <summary><span class="gt">學分確認教學</span><span class="gs">切結書第 (3) 項「尚未修習的課程學分」怎麼查</span></summary>
+<details class="guide" id="creditGuide" open hidden>
+  <summary><span class="gi">?</span><span class="gtx"><span class="gt">學分怎麼查？看這裡</span><span class="gs">切結書第 (3) 項「必修／選修課程尚餘學分」的查詢步驟</span></span><span class="garrow"></span></summary>
   <div class="gb">
     <p class="gp">查詢路徑：<b>單一入口 → 教務資訊系統 → 我的成績 → 應修未修畢業學分</b></p>
     <ol class="gl">
@@ -481,7 +487,7 @@
   <div class="sub-l" style="line-height:1.7">
     <p>(1) 本人同意依<span class="prog"></span>實習課程修習規定，以及實習單位之相關規定辦理後續報到、實習工作、成績評定等相關事宜。</p>
     <p>(2) 本人同意適切地安排個人課程，無延畢之可能，以利後續實習或工作安排。</p>
-    <p>(3) 截至 <input class="n" data-k="ay"> 學年度第 <input class="n" data-k="sem" style="width:2em"> 學期止，本人「尚未」修習的課程學分：必修課程尚餘 <input class="n" data-k="reqCr"> 學分；選修課程尚餘 <input class="n" data-k="eleCr"> 學分。</p>
+    <p>(3) 截至 <input class="n" data-k="ay"> 學年度第 <input class="n" data-k="sem" style="width:2em"> 學期止，本人「尚未」修習的課程學分：必修課程尚餘 <input class="n" data-k="reqCr"> 學分；選修課程尚餘 <input class="n" data-k="eleCr"> 學分。<button type="button" class="gbtn no-print" data-guide>學分怎麼查？</button></p>
     <p>(4) <span class="cbase"></span>實習係正式課程，於實習期間需配合不得申請辦理提前入伍事宜。若因未實習期滿而影響實習課程成績考評，造成無法取得該課程學分、個人學期成績不及格，由個人自行承擔。</p>
     <p>(5) 倘若因個人適應不良或學習不佳等因素，無法完成預訂之實習時程，由實習單位或學生決定實習中止或繼續。若中止實習，學生需另行尋找實習單位，應填寫「更換實習單位申請書」及各項表格。</p>
   </div>
@@ -599,7 +605,7 @@
       {t:'sig',k:'sigTutor',l:'導師簽章（選填）'},{t:'sig',k:'sigDirector',l:'系所單位主管簽章（選填）'}],
     p2:[...COMMON,H('壹、實習單位代表'),HRS,T('rep','代表人姓名'),{t:'sig',k:'sigRep',l:'代表人簽章（選填）'},T('repTitle','職稱'),T('repTel','連絡電話',{tel:true}),NOTE('立同意書單位＝實習單位名稱（自動帶入）。代表人簽章：列印後蓋章。')],
     p3:[...COMMON,H('壹、切結事項'),C('確認事項',[chk('agree','本人同意於該學年度學期至實習單位進行實習')]),
-      {t:'row',l:'尚未修習之學分',items:[N('reqCr','必修尚餘'),N('eleCr','選修尚餘')]},{t:'sig',k:'sigStudent',l:'立切結書人簽名（選填）'}],
+      {t:'gbtn'},{t:'row',l:'尚未修習之學分',items:[N('reqCr','必修尚餘'),N('eleCr','選修尚餘')]},{t:'sig',k:'sigStudent',l:'立切結書人簽名（選填）'}],
     p4:[...COMMON,H('壹、實習與監護人資料'),T('siteAddr','實習地點地址'),HRS,A('jobDesc','實習工作內容'),
       T('payAmt','薪資（元）'),C('薪資單位',[chk('payMonth','月'),chk('payHour','時')]),C('實習期間提供',[chk('giveMeal','膳食'),chk('giveDorm','住宿')]),
       T('guardian','監護人姓名'),{t:'sig',k:'sigGuardian',l:'監護人簽章（選填）'},T('guardianTel','監護人連絡電話',{tel:true}),A('guardianNote','監護人意見')],
@@ -623,6 +629,7 @@
       case 'chips': return `<div class="fld top"><label>${f.l}</label><div class="chips">${f.items.map(i=>`<label><input type="checkbox" data-k="${i.k}">${i.l}</label>`).join('')}</div></div>`;
       case 'rate': return `<div class="fld"><label>${f.l}</label><div class="chips rate">${[5,4,3,2,1].map(v=>`<label><input type="radio" name="m_${f.k}" value="${v}" data-k="${f.k}">${v}</label>`).join('')}</div></div>`;
       case 'sig': return `<div class="fld top"><label>${f.l}</label><div class="sigbox" data-sig="${f.k}"></div></div>`;
+      case 'gbtn': return `<div class="fld"><label>學分查詢</label><div><button type="button" class="gbtn" data-guide style="margin:0;padding:8px 12px;font-size:12.5px">學分怎麼查？看教學</button></div></div>`;
       case 'total': return `<div class="scoreband"><span class="sl">七項合計</span><span class="sr"><span class="sn">21 分以上為推薦實習</span><b class="mtotal">0</b><span class="tagr">推薦實習</span></span></div>`;
     }
     return '';
@@ -839,6 +846,7 @@
     return false;
   }
   updateStatus();
+  document.addEventListener('click',e=>{ const b=e.target.closest('[data-guide]'); if(!b) return; const g=document.getElementById('creditGuide'); g.hidden=false; g.open=true; g.classList.remove('flash'); void g.offsetWidth; g.classList.add('flash'); g.scrollIntoView({behavior:'smooth',block:'start'}); });
   document.getElementById('guardNote').querySelector('.x').addEventListener('click',()=>{ document.getElementById('guardNote').hidden=true; });
 
   /* ---- 分頁 ---- */
