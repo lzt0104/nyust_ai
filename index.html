@@ -96,6 +96,15 @@
   input.n{width:3em}
   input.u,input.n{border-bottom:1px dashed #3a6ea5}
   input.u:focus,input.n:focus,textarea:focus,input.c:focus{background:#fffbe6}
+  .missing{background:#ffe3e3 !important;outline:2px solid #e05252 !important;outline-offset:-1px}
+  #mform .chips.missing,.cbgroup.missing{outline:2px dashed #e05252 !important;outline-offset:2px;border-radius:6px}
+  .notice{max-width:640px;margin:0 auto 12px;background:#fff7e0;border:1px solid #f0c36d;border-left:5px solid #e6a100;border-radius:8px;padding:10px 14px;font-size:14px;line-height:1.6}
+  .notice.err{background:#fdecec;border-color:#e8a0a0;border-left-color:#d03b3b}
+  .notice ul{margin:6px 0 0;padding-left:1.4em}
+  .notice li{margin:0}
+  .notice .x{float:right;cursor:pointer;color:#888;font-size:16px;margin-left:8px}
+  body:not(.formmode) .notice{max-width:210mm}
+  @media print{ .notice{display:none !important} .missing{background:transparent !important;outline:0 !important} }
   ::placeholder{color:#9bb3cc;font-size:.9em}
   input.u.w{width:14em}
   input.u.xl{width:20em}
@@ -172,6 +181,20 @@
   #mform .chips input:checked{background:currentColor;box-shadow:inset 0 0 0 2px var(--accent)}
   #mform .note{font-size:13px;color:#666;background:#f6f7f8;padding:8px 10px;border-radius:6px;margin:6px 0 12px}
   #mform .total{font-size:15px;font-weight:bold;color:var(--accent)}
+  /* 電子簽名 */
+  .sigslot{display:inline-flex;align-items:center;gap:6px;vertical-align:middle;min-height:12mm}
+  .sigslot img{height:12mm;max-width:60mm;object-fit:contain;vertical-align:middle}
+  .sigslot .sigbtn{font:inherit;font-size:11px;padding:2px 8px;border:1px dashed #3a6ea5;border-radius:4px;background:#eaf3ff;color:#1f5f8b;cursor:pointer}
+  .sigslot .sigdel{font:inherit;font-size:11px;padding:2px 6px;border:1px solid #c66;border-radius:4px;background:#fff;color:#c33;cursor:pointer}
+  .sigslot input[type=file]{display:none}
+  #mform .sigbox{border:1px dashed #c5ccd3;border-radius:8px;padding:10px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  #mform .sigbox img{height:60px;max-width:220px;object-fit:contain;background:#fff;border:1px solid #eee}
+  #mform .sigbox .sigbtn,#mform .sigbox .sigdel{font:inherit;font-size:14px;padding:8px 14px;border-radius:6px;cursor:pointer}
+  #mform .sigbox .sigbtn{border:1px solid var(--accent);background:var(--accent);color:#fff}
+  #mform .sigbox .sigdel{border:1px solid #c66;background:#fff;color:#c33}
+  #mform .sigbox input[type=file]{display:none}
+  #mform .sigbox .sighint{font-size:12.5px;color:#666;width:100%}
+  @media print{ .sigslot .sigbtn,.sigslot .sigdel{display:none !important} }
   .mprint{display:none}
   body.formmode .mprint{display:block;position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid #d6dbe0;z-index:20}
   body.formmode .mprint button{width:100%;font:inherit;font-size:16px;padding:12px;border-radius:8px;border:0;background:var(--accent);color:#fff}
@@ -245,10 +268,12 @@
       <button id="btnClear" class="ghost">清除全部資料</button>
     </div>
   </div>
-  <p class="hint">上方共用資料會自動帶入五份表單；直接在表單上填寫亦可。資料只儲存在這台電腦的瀏覽器裡。按「列印／匯出 PDF」後，在印表機選單選擇「另存為 PDF」即可匯出；簽章欄位請列印後親筆簽名／蓋章。</p>
+  <p class="hint">上方共用資料會自動帶入五份表單；直接在表單上填寫亦可。資料只儲存在這台電腦的瀏覽器裡。按「列印／匯出 PDF」後，在印表機選單選擇「另存為 PDF」即可匯出；簽章欄位請列印後親筆簽名／蓋章。所有欄位皆為必填，未填完不能列印；監護人同意書於填表時已滿 20 歲者可免繳。</p>
 </div>
 
 <main>
+<div class="notice" id="guardNote" hidden>提醒：<b>監護人同意書</b>僅未滿 20 歲之學生需繳交；填表時已滿 20 歲者可免繳此份文件。<span class="x" title="關閉">✕</span></div>
+<div class="notice err" id="valMsg" hidden></div>
 <div id="mform"></div>
 
 <!-- ============ 1. 實習單位申請表 ============ -->
@@ -332,7 +357,7 @@
     </td></tr>
     <tr><td colspan="6" style="height:22mm;vertical-align:top">
       <div style="display:flex;padding:4pt 10pt">
-        <span style="width:50%">導師簽章：</span><span style="width:50%">系所單位主管簽章：</span>
+        <span style="width:50%">導師簽章：<span class="sigslot" data-sig="sigTutor"></span></span><span style="width:50%">系所單位主管簽章：</span>
       </div>
     </td></tr>
   </tbody></table>
@@ -364,7 +389,7 @@
   </ol>
   <div class="sig">
     <p>立同意書單位：<input class="u xl l" data-k="org"></p>
-    <p>代　表　人：<input class="u w l" data-k="rep">　（簽章）</p>
+    <p>代　表　人：<input class="u w l" data-k="rep">　<span class="sigslot" data-sig="sigRep"></span>（簽章）</p>
     <p>職　　　稱：<input class="u w l" data-k="repTitle"></p>
     <p>連絡電話：　<input class="u w l" data-k="repTel"></p>
   </div>
@@ -451,7 +476,7 @@
     <tr><th style="vertical-align:top">5.預期成果：</th><td><textarea placeholder="點此填寫" rows="3" data-k="planResult"></textarea></td></tr>
   </table>
   <div class="sig" style="margin-top:12pt;display:flex;padding:0 10pt">
-    <p style="width:50%">授課教師簽章：</p>
+    <p style="width:50%">授課教師簽章：<span class="sigslot" data-sig="sigTeacher"></span></p>
     <p style="width:50%">主任簽章：</p>
   </div>
 </section>
@@ -476,7 +501,7 @@
     {t:'sel',k:'course',l:'實習課程',opts:['資訊實務實習（一）','資訊實務實習（二）','程式實務實習（一）','程式實務實習（二）','實務研究實習（一）','實務研究實習（二）']},
     {t:'row',l:'學年度／學期',items:[N('ay','學年度'),{t:'sel',k:'sem',opts:[['一','第一學期'],['二','第二學期']]}]},
     T('sid','學號'),T('name','學生姓名'),N('grade','年級'),T('org','實習單位名稱'),
-    D('s','實習開始日（民國）'),D('e','實習結束日（民國）'),D('d','文件日期（民國，各文件底下的日期）')];
+    D('s','實習開始日（民國）'),D('e','實習結束日（民國）'),D('d','文件日期（民國）')];
   const SPEC={
     p1:[...COMMON,H('實習單位申請表'),T('dept','系級（自動帶入，可修改）'),T('orgAddr','公司地址'),T('siteAddr','實習地址'),T('boss','負責人'),T('contact','聯絡人'),T('contactTel','聯絡電話',{tel:true}),T('taxId','統一編號或營業登記證'),T('industry','產業類型'),D('ev','評估日期（民國）'),
       C('評估方式',[chk('ev1','實地訪視'),chk('ev2','電話訪談'),chk('ev3','與實習機構人員面談'),chk('ev4','其他')]),T('ev4t','評估方式：其他（說明）'),
@@ -491,15 +516,15 @@
       R('r1','工作環境及安全性'),R('r2','工作專業性'),R('r3','體力負荷（5 負荷適合 → 1 負荷太重）'),R('r4','實習待遇'),R('r5','膳宿及保險'),R('r6','培訓計畫'),R('r7','合作理念'),
       {t:'total'},C('評估結論',[chk('rec1','推薦實習（21分(含)以上）'),chk('rec2','不推薦實習（20分(含)以下）')]),
       A('remark','補充說明（請說明推薦、不推薦的理由）'),C('最終評估結論',[chk('fin1','推薦實習'),chk('fin2','不推薦實習')]),
-      NOTE('導師簽章、系所單位主管簽章：列印後親筆簽章。')],
-    p2:[...COMMON,H('實務實習同意書'),HRS,T('rep','代表人姓名'),T('repTitle','職稱'),T('repTel','連絡電話',{tel:true}),NOTE('立同意書單位＝實習單位名稱（自動帶入）。代表人簽章：列印後蓋章。')],
+      {t:'sig',k:'sigTutor',l:'導師簽章（選填）'},NOTE('系所單位主管簽章：列印後親筆簽章。')],
+    p2:[...COMMON,H('實務實習同意書'),HRS,T('rep','代表人姓名'),{t:'sig',k:'sigRep',l:'代表人簽章（選填）'},T('repTitle','職稱'),T('repTel','連絡電話',{tel:true}),NOTE('立同意書單位＝實習單位名稱（自動帶入）。代表人簽章：列印後蓋章。')],
     p3:[...COMMON,H('實習意願確認切結書'),C('確認事項',[chk('agree','本人同意於該學年度學期至實習單位進行實習')]),
       {t:'row',l:'尚未修習之學分',items:[N('reqCr','必修尚餘'),N('eleCr','選修尚餘')]},NOTE('立切結書人簽名：列印後親筆簽名。')],
-    p4:[...COMMON,H('監護人同意書'),T('siteAddr','實習地點地址'),HRS,A('jobDesc','實習工作內容'),
+    p4:[...COMMON,H('監護人同意書'),NOTE('僅未滿 20 歲之學生需繳交此份；已滿 20 歲者可免繳。'),T('siteAddr','實習地點地址'),HRS,A('jobDesc','實習工作內容'),
       T('payAmt','薪資（元）'),C('薪資單位',[chk('payMonth','月'),chk('payHour','時')]),C('實習期間提供',[chk('giveMeal','膳食'),chk('giveDorm','住宿')]),
       T('guardian','監護人姓名'),T('guardianTel','監護人連絡電話',{tel:true}),A('guardianNote','監護人意見'),NOTE('監護人簽章：列印後加蓋監護人私章。')],
     p5:[...COMMON,H('實習計畫書'),T('phone','學生手機',{tel:true}),T('email','學生EMAIL',{email:true}),T('orgAddr','實習機構地址'),T('contact','實習單位連絡人'),T('contactTel','實習單位連絡人電話',{tel:true}),HRS,
-      A('planTopic','1. 實習主題'),A('planIntro','2. 實習單位簡介'),A('planMotive','3. 實習動機與目的'),A('planContent','4. 預計實習內容'),A('planResult','5. 預期成果'),NOTE('授課教師簽章、主任簽章：列印後親筆簽章。')]
+      A('planTopic','1. 實習主題'),A('planIntro','2. 實習單位簡介'),A('planMotive','3. 實習動機與目的'),A('planContent','4. 預計實習內容'),A('planResult','5. 預期成果'),{t:'sig',k:'sigTeacher',l:'授課教師簽章（選填）'},NOTE('主任簽章：列印後親筆簽章。')]
   };
   function inp(f){
     const type=f.num?'number':f.tel?'tel':f.email?'email':'text';
@@ -517,6 +542,7 @@
       case 'date': return `<div class="fld"><label>${f.l}</label><div class="inl"><input type="number" inputmode="numeric" data-k="${f.p}y" placeholder="年"><span>年</span><input type="number" inputmode="numeric" data-k="${f.p}m" placeholder="月"><span>月</span><input type="number" inputmode="numeric" data-k="${f.p}d" placeholder="日"><span>日</span></div></div>`;
       case 'chips': return `<div class="fld"><label>${f.l}</label><div class="chips">${f.items.map(i=>`<label><input type="checkbox" data-k="${i.k}">${i.l}</label>`).join('')}</div></div>`;
       case 'rate': return `<div class="fld"><label>${f.l}</label><div class="chips">${[5,4,3,2,1].map(v=>`<label><input type="radio" name="m_${f.k}" value="${v}" data-k="${f.k}">${v}</label>`).join('')}</div></div>`;
+      case 'sig': return `<div class="fld"><label>${f.l}</label><div class="sigbox" data-sig="${f.k}"></div></div>`;
       case 'total': return `<div class="fld total">總分：<span class="mtotal">0</span> 分（21 分(含)以上為推薦實習）</div>`;
     }
     return '';
@@ -531,6 +557,7 @@
     });
     mform.querySelectorAll('textarea').forEach(grow);
     total();
+    renderSigs();
   }
 
   /* ---- 評分列（5~1 單選） ---- */
@@ -598,6 +625,8 @@
     const v=getVal(el);
     if(el.type==='radio' && v===undefined) return;
     data[k]=v;
+    document.querySelectorAll(`[data-k="${k}"].missing`).forEach(e=>{ if(v!=null&&String(v).trim()!=='') e.classList.remove('missing'); });
+    if(el.type==='checkbox'||el.type==='radio'){ const g=el.closest('.chips.missing')||el.closest('td.missing')||el.closest('p.missing'); if(g) g.classList.remove('missing'); }
     if(k==='dept') data.deptManual=true;
     sync(k,v,el);
     if(el.tagName==='TEXTAREA') grow(el);
@@ -643,6 +672,9 @@
     document.querySelectorAll('.page.active textarea').forEach(grow);
     fit(p);
     buildMobile(p);
+    document.getElementById('guardNote').hidden=(p!=='p4');
+    document.getElementById('valMsg').hidden=true;
+    document.querySelectorAll('.missing').forEach(e=>e.classList.remove('missing'));
     try{ localStorage.setItem(KEY+':tab',p); }catch(e){}
     window.scrollTo({top:0});
   }
@@ -658,7 +690,88 @@
   document.getElementById('btnMode').addEventListener('click',()=>setMode(mode==='form'?'paper':'form'));
 
   /* ---- 列印 ---- */
+  /* ---- 電子簽名（選填）：上傳圖片即印出，未上傳則列印後手簽 ---- */
+  const SIGKEYS=['sigTutor','sigRep','sigTeacher'];
+  function sigHTML(k, mobile){
+    const has=!!data[k];
+    return (has?`<img src="${data[k]}" alt="簽名">`:'')+
+      (mobile?`<span class="sighint">可上傳簽名圖片（PNG／JPG，建議白底或透明背景）；不上傳則列印後親筆簽章。</span>`:'')+
+      (has?`<button type="button" class="sigdel">移除</button>`:`<button type="button" class="sigbtn">${mobile?'上傳簽名圖片':'上傳電子簽名'}</button>`)+
+      `<input type="file" accept="image/*">`;
+  }
+  function renderSigs(){
+    document.querySelectorAll('[data-sig]').forEach(slot=>{
+      const k=slot.dataset.sig, mobile=slot.classList.contains('sigbox');
+      slot.innerHTML=sigHTML(k,mobile);
+      const file=slot.querySelector('input[type=file]');
+      const btn=slot.querySelector('.sigbtn'); if(btn) btn.addEventListener('click',()=>file.click());
+      const del=slot.querySelector('.sigdel'); if(del) del.addEventListener('click',()=>{ delete data[k]; save(); renderSigs(); scheduleFit(); });
+      file.addEventListener('change',()=>{ const f=file.files[0]; if(f) loadSig(k,f); });
+    });
+  }
+  function loadSig(k,file){
+    const rd=new FileReader();
+    rd.onload=()=>{
+      const img=new Image();
+      img.onload=()=>{
+        const MAXW=900, MAXH=360; let w=img.width, h=img.height; const r=Math.min(1,MAXW/w,MAXH/h); w=Math.round(w*r); h=Math.round(h*r);
+        const c=document.createElement('canvas'); c.width=w; c.height=h; c.getContext('2d').drawImage(img,0,0,w,h);
+        let url; try{ url=c.toDataURL('image/png'); }catch(e){ url=rd.result; }
+        if(url.length>600000){ alert('圖片過大，請使用較小的簽名圖片（約 1000×400 像素以內）。'); return; }
+        data[k]=url; save(); renderSigs(); scheduleFit();
+      };
+      img.onerror=()=>alert('無法讀取這個圖片檔，請改用 PNG 或 JPG。');
+      img.src=rd.result;
+    };
+    rd.readAsDataURL(file);
+  }
+  renderSigs();
+
+  /* ---- 必填檢查 ---- */
+  const OPT=new Set(['ev4t','ins4t','q5t','dormAmt','dormDist','dormNote','dormFree','dormPay','payAmt','remark','guardianNote','deptManual']);
+  const GROUPS={
+    p1:[['評估方式',['ev1','ev2','ev3','ev4']],['提供薪資額度',['payYes','payNo']],['住宿',['dorm','dormSelf']],['保險事宜',['ins1','ins2','ins3','ins4','insNone']],['膳食',['mealSelf','mealCo']],['廠商資格',['q1','q2','q3','q4','q5']],['實習機會',['op1','op2','op3']],['評估結論',['rec1','rec2']],['最終評估結論',['fin1','fin2']]],
+    p3:[['確認事項（本人同意）',['agree']]],
+    p4:[['薪資單位（月／時）',['payMonth','payHour']]]
+  };
+  const LABEL={};
+  Object.values(SPEC).flat().forEach(f=>{
+    if(f.t==='text'||f.t==='area'||f.t==='sel') LABEL[f.k]=f.l;
+    if(f.t==='row') f.items.forEach(i=>{ if(i.k) LABEL[i.k]=(f.l+'：'+(i.l||'')); });
+    if(f.t==='date'){ LABEL[f.p+'y']=f.l; LABEL[f.p+'m']=f.l; LABEL[f.p+'d']=f.l; }
+  });
+  LABEL.sem='學期'; LABEL.evY=LABEL.evM=LABEL.evD='評估日期（民國）';
+  function validate(p){
+    const sec=document.getElementById(p);
+    document.querySelectorAll('.missing').forEach(e=>e.classList.remove('missing'));
+    const missing=[]; const seen=new Set();
+    sec.querySelectorAll('[data-k]').forEach(el=>{
+      const k=el.dataset.k; if(seen.has(k)||OPT.has(k)) return;
+      if(el.type==='checkbox'||el.type==='radio'||el.readOnly) return;
+      seen.add(k);
+      const v=data[k]; if(v==null||String(v).trim()==='') missing.push({k,l:LABEL[k]||k});
+    });
+    if(p==='p1' && data.payYes && !(data.payAmt&&String(data.payAmt).trim())) missing.push({k:'payAmt',l:'薪資額度（勾選「是」需填寫）'});
+    if(p==='p1' && data.ev4 && !(data.ev4t&&String(data.ev4t).trim())) missing.push({k:'ev4t',l:'評估方式：其他（說明）'});
+    (GROUPS[p]||[]).forEach(([l,keys])=>{ if(!keys.some(k=>data[k])) missing.push({group:keys,l:l+'（至少勾選一項）'}); });
+    const box=document.getElementById('valMsg');
+    if(!missing.length){ box.hidden=true; return true; }
+    missing.forEach(m=>{
+      if(m.k){ document.querySelectorAll(`[data-k="${m.k}"]`).forEach(e=>e.classList.add('missing')); }
+      else m.group.forEach(k=>document.querySelectorAll(`[data-k="${k}"]`).forEach(e=>{ const g=e.closest('.chips')||e.closest('td')||e.closest('p'); if(g) g.classList.add('missing'); }));
+    });
+    const labels=[...new Set(missing.map(m=>m.l))];
+    box.innerHTML='<b>尚有 '+labels.length+' 項未填寫，填完才能列印：</b><ul>'+labels.map(l=>'<li>'+l+'</li>').join('')+'</ul>';
+    box.hidden=false;
+    const root=document.body.classList.contains('formmode')?mform:sec;
+    const first=root.querySelector('.missing'); (first||box).scrollIntoView({behavior:'smooth',block:'center'});
+    if(first&&first.focus) try{ first.focus({preventScroll:true}); }catch(e){}
+    return false;
+  }
+  document.getElementById('guardNote').querySelector('.x').addEventListener('click',()=>{ document.getElementById('guardNote').hidden=true; });
+
   function doPrint(){
+    if(!validate(activeId())) return;
     document.body.classList.remove('formmode');
     fit(activeId());
     document.querySelectorAll('.page.active textarea').forEach(grow);
