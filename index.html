@@ -46,6 +46,8 @@
   .top .tbtn:hover{background:rgba(255,255,255,.08)}
   .top .gold{font:inherit;font-size:12.5px;line-height:1;font-weight:500;color:var(--navy);background:var(--gold);border:0;padding:8px 15px;cursor:pointer}
   .top .gold:hover{background:#e2c273}
+  .top .gold.all{background:#fff;color:var(--navy)}
+  .top .gold.all:hover{background:#f1f3f6}
   .top .mob{display:none}
   /* 文件列 */
   .docbar{display:flex;align-items:stretch;justify-content:space-between;background:#fff;border-bottom:1px solid var(--bd);position:sticky;top:58px;z-index:29}
@@ -60,6 +62,9 @@
   .tabs button.on{border-bottom-color:var(--navy);background:var(--band);color:var(--navy)}
   .tabs button.on .nm{font-weight:500}
   .tabs button.on .no{color:#fff;background:var(--navy);border-color:var(--navy);padding:0 5px}
+  .skipg{display:flex;align-items:center;gap:6px;padding:0 16px;border-left:1px solid var(--bd2);font-size:11.5px;color:var(--muted);white-space:nowrap;cursor:pointer}
+  .skipg input{width:13px;height:13px;margin:0;accent-color:var(--navy)}
+  .tabs button.skipped .nm,.tabs button.skipped .no{opacity:.45}
   .progress{display:flex;align-items:center;gap:10px;padding:0 20px;border-left:1px solid var(--bd2);flex:none}
   .progress .pl{font-size:11.5px;color:var(--muted)}
   .progress .bar{width:96px;height:5px;background:#e4e7ec}
@@ -262,6 +267,10 @@
     .sheet{width:210mm;height:297mm;min-height:297mm;padding:20mm;margin:0;box-shadow:none;overflow:hidden;break-after:page;page-break-after:always}
     .sheet:last-child{break-after:auto;page-break-after:auto}
     .page:not(.active){display:none}
+    body.printall .page:not(.skip){display:block !important}
+    body.printall .page.skip{display:none !important}
+    body.printall .page .sheet{break-after:page;page-break-after:always}
+    body.printall .page.lastdoc .sheet:last-child{break-after:auto;page-break-after:auto}
     .page input.u,.page input.n,.page input.c,.page textarea{background:transparent !important}
     input.u,input.n{border-bottom:1px solid #000;border-radius:0}
     input.c,textarea{border-radius:0}
@@ -307,7 +316,10 @@
     #mform .fld.top>label{padding-top:0}
     #mform .fld .req{grid-column:1}
     .mprint{display:block;position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--bd);z-index:20}
-    .mprint button{width:100%;font:inherit;font-size:15px;font-weight:500;padding:12px;border:0;background:var(--gold);color:var(--navy)}
+    .mprint{display:flex;gap:8px}
+    .mprint button{flex:1;font:inherit;font-size:14px;font-weight:500;padding:12px 6px;border:0;background:var(--gold);color:var(--navy)}
+    .mprint button.all{background:#fff;border:1px solid var(--navy)}
+    .skipg{border-left:0;padding:8px 14px;border-top:1px solid var(--bd2)}
     body{padding-bottom:80px}
   }
 </style>
@@ -326,6 +338,7 @@
     <button id="btnMode" class="tbtn mob" type="button">紙本預覽</button>
     <button id="btnClear" class="tbtn" type="button">清除資料</button>
     <button id="btnPrint" class="gold" type="button">列印 ／ 匯出 PDF</button>
+    <button id="btnPrintAll" class="gold all" type="button">五份合併列印</button>
   </div>
 </header>
 <nav class="docbar ui">
@@ -336,6 +349,7 @@
     <button data-p="p4" type="button"><span class="no">04</span><span class="nm">監護人同意書</span><span class="tag">滿 20 歲免繳</span><span class="dot"></span></button>
     <button data-p="p5" type="button"><span class="no">05</span><span class="nm">實習計畫書</span><span class="dot"></span></button>
   </div>
+  <label class="skipg"><input type="checkbox" id="skipGuardian">已滿 20 歲，免繳監護人同意書</label>
   <div class="progress"><span class="pl">整體完成度</span><div class="bar"><div id="progFill"></div></div><span id="progPct" class="mono">0%</span></div>
 </nav>
 <div class="app">
@@ -585,7 +599,7 @@
 </div></div>
 </main>
 </div>
-<div class="mprint ui"><button id="btnPrint2" type="button">列印 ／ 匯出 PDF（目前文件）</button></div>
+<div class="mprint ui"><button id="btnPrint2" type="button">列印 ／ 匯出 PDF（目前文件）</button><button id="btnPrintAll2" type="button" class="all">五份合併列印</button></div>
 
 <script>
 (function(){
@@ -821,6 +835,7 @@
     (GROUPS[p]||[]).forEach(([l,keys])=>{ if(!keys.some(k=>data[k])) missing.push({group:keys,l:l+'（至少勾選一項）'}); });
     return missing;
   }
+  const skipG=()=>!!data.skipGuardian;
   function docStatus(p){
     const keys=reqKeys(p); const n=keys.length+(GROUPS[p]||[]).length;
     const miss=missingList(p).length; const done=Math.max(0,n-miss);
@@ -828,7 +843,10 @@
   }
   function updateStatus(){
     let N=0,D=0;
+    document.querySelector('#tabs button[data-p=p4]').classList.toggle('skipped',skipG());
+    document.getElementById('p4').classList.toggle('skip',skipG());
     ['p1','p2','p3','p4','p5'].forEach(p=>{
+      if(p==='p4'&&skipG()){ const d=document.querySelector('#tabs button[data-p=p4] .dot'); if(d) d.className='dot'; return; }
       const st=docStatus(p); N+=st.n; D+=st.done;
       const dot=document.querySelector('#tabs button[data-p='+p+'] .dot'); if(dot){ dot.className='dot '+(st.state==='none'?'':st.state); }
     });
@@ -965,6 +983,33 @@
     document.querySelectorAll('.page.active textarea').forEach(grow);
     setTimeout(()=>{ window.print(); },50);
   }
+  /* ---- 五份合併列印 ---- */
+  function doPrintAll(){
+    const docs=['p1','p2','p3','p4','p5'].filter(p=>!(p==='p4'&&skipG()));
+    const problems=docs.map(p=>({p,miss:missingList(p)})).filter(x=>x.miss.length);
+    const box=document.getElementById('valMsg');
+    if(problems.length){
+      box.innerHTML='<b>尚有 '+problems.length+' 份文件未填完，填完才能合併列印：</b><ul>'+problems.map(x=>'<li>'+DOCNAME[x.p]+'：缺 '+[...new Set(x.miss.map(m=>m.l))].length+' 項</li>').join('')+'</ul>';
+      box.hidden=false;
+      show(problems[0].p); validate(problems[0].p);
+      return;
+    }
+    box.hidden=true;
+    const cur=activeId();
+    docs.forEach(p=>{ document.getElementById(p).classList.add('active'); fit(p); document.querySelectorAll('#'+p+' textarea').forEach(grow); });
+    document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('lastdoc'));
+    document.getElementById(docs[docs.length-1]).classList.add('lastdoc');
+    const sid=String(data.sid||'').trim(), name=String(data.name||'').trim();
+    document.title=`${sid}-${name}-實習申請文件（全部）`;
+    document.body.classList.add('printall');
+    const restore=()=>{ document.body.classList.remove('printall'); document.querySelectorAll('.page').forEach(pg=>pg.classList.toggle('active',pg.id===cur)); updateTitle(); applyZoom(); window.removeEventListener('afterprint',restore); };
+    window.addEventListener('afterprint',restore);
+    setTimeout(()=>{ window.print(); setTimeout(restore,1500); },80);
+  }
+  const sg=document.getElementById('skipGuardian'); sg.checked=skipG();
+  sg.addEventListener('change',()=>{ data.skipGuardian=sg.checked; save(); updateStatus(); });
+  document.getElementById('btnPrintAll').addEventListener('click',doPrintAll);
+  document.getElementById('btnPrintAll2').addEventListener('click',doPrintAll);
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>fit(activeId()));
   document.getElementById('btnPrint').addEventListener('click',doPrint);
   document.getElementById('btnPrint2').addEventListener('click',doPrint);
