@@ -264,7 +264,8 @@
     .page.active{display:block !important}
     main{padding:0 !important}
     .page{width:210mm;margin:0;padding:0}
-    .sheet{width:210mm;height:297mm;min-height:297mm;padding:20mm;margin:0;box-shadow:none;overflow:hidden;break-after:page;page-break-after:always}
+    .sheet{width:210mm;height:auto;min-height:0;padding:20mm;margin:0 !important;box-shadow:none;overflow:visible;break-after:page;page-break-after:always;break-inside:avoid}
+    .sheet+.sheet{margin-top:0 !important}
     .sheet:last-child{break-after:auto;page-break-after:auto}
     .page:not(.active){display:none}
     body.printall .page:not(.skip){display:block !important}
