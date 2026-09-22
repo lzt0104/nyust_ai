@@ -425,8 +425,8 @@
 <div class="sheet">
   <h2 class="t">國立雲林科技大學<span class="prog"></span>實習單位申請表</h2>
   <table class="f">
-    <colgroup><col style="width:28mm"><col style="width:38mm"><col style="width:16mm"><col style="width:30mm"><col style="width:22mm"><col></colgroup>
-    <tbody><tr><th>系級</th><td><input class="c" placeholder="點此填寫" data-k="dept" style="font-size:10pt"></td><th>學號</th><td><input class="c" placeholder="點此填寫" data-k="sid"></td><th>學生姓名</th><td><input class="c" placeholder="點此填寫" data-k="name"></td></tr>
+    <colgroup><col style="width:27mm"><col style="width:44mm"><col style="width:15mm"><col style="width:28mm"><col style="width:20mm"><col></colgroup>
+    <tbody><tr><th>系級</th><td><textarea placeholder="點此填寫" rows="1" data-k="dept" style="font-size:10pt;line-height:1.35;text-align:center;padding:0"></textarea></td><th>學號</th><td><input class="c" placeholder="點此填寫" data-k="sid"></td><th>學生姓名</th><td><input class="c" placeholder="點此填寫" data-k="name"></td></tr>
     <tr><th>實習單位名稱</th><td colspan="5"><input class="c" placeholder="點此填寫" data-k="org"></td></tr>
     <tr><th>公司地址</th><td colspan="5"><input class="c" placeholder="點此填寫" data-k="orgAddr"></td></tr>
     <tr><th>實習地址</th><td colspan="5"><input class="c" placeholder="點此填寫" data-k="siteAddr"></td></tr>
@@ -469,7 +469,7 @@
 </div>
 <div class="sheet">
   <table class="f">
-    <colgroup><col style="width:28mm"><col style="width:38mm"><col style="width:16mm"><col style="width:30mm"><col style="width:22mm"><col></colgroup>
+    <colgroup><col style="width:27mm"><col style="width:44mm"><col style="width:15mm"><col style="width:28mm"><col style="width:20mm"><col></colgroup>
     <tbody class="grp"><tr class="secrow"><td class="sec" colspan="6">二、實習廠商資格評估</td></tr>
     <tr><th>廠商資格</th><td colspan="5">
       <label class="cb"><input type="checkbox" data-k="q1">營業登記／行號登記</label>
@@ -698,7 +698,7 @@
     p3:[...COMMON,H('壹、切結事項'),C('確認事項',[chk('agree','本人同意於該學年度學期至實習單位進行實習')]),
       {t:'gbtn'},{t:'row',l:'尚未修習之學分',items:[N('reqCr','必修尚餘'),N('eleCr','選修尚餘')]},{t:'sig',k:'sigStudent',l:'立切結書人簽名（選填）'}],
     p4:[...COMMON,H('壹、實習與監護人資料'),T('siteAddr','實習地點地址'),HRS,A('jobDesc','實習工作內容'),
-      T('payAmt','薪資（元）'),C('薪資單位',[chk('payMonth','月'),chk('payHour','時')]),C('實習期間提供',[chk('giveMeal','膳食'),chk('giveDorm','住宿')]),
+      T('payAmt','薪資（元，無薪資可填 0 或留白）'),C('薪資單位（無薪資可不勾）',[chk('payMonth','月'),chk('payHour','時')]),C('實習期間提供（未提供可不勾）',[chk('giveMeal','膳食'),chk('giveDorm','住宿')]),
       T('guardian','監護人姓名（選填，可留白手寫）'),{t:'sig',k:'sigGuardian',l:'監護人簽章（選填）'},T('guardianTel','監護人連絡電話（選填）',{tel:true}),A('guardianNote','監護人意見（必填，沒有意見請填「無」）')],
     p5:[...COMMON,H('壹、聯絡與機構資料'),T('phone','學生手機',{tel:true}),T('email','學生EMAIL',{email:true}),T('orgAddr','實習機構地址'),T('contact','實習單位連絡人'),T('contactTel','實習單位連絡人電話',{tel:true}),HRS,
       H('貳、實習計畫內容','空白不夠時列印會自動配頁'),A('planTopic','1. 實習主題'),A('planIntro','2. 實習單位簡介'),A('planMotive','3. 實習動機與目的'),A('planContent','4. 預計實習內容'),A('planResult','5. 預期成果'),{t:'sig',k:'sigTeacher',l:'授課教師簽章（選填）'},{t:'sig',k:'sigChief',l:'主任簽章（選填）'}]
@@ -895,7 +895,7 @@
   const GROUPS={
     p1:[['評估方式',['ev1','ev2','ev3','ev4']],['提供薪資額度',['payYes','payNo']],['住宿',['dorm','dormSelf']],['保險事宜',['ins1','ins2','ins3','ins4','insNone']],['膳食',['mealSelf','mealCo']],['廠商資格',['q1','q2','q3','q4','q5']],['實習機會',['op1','op2','op3']],['評估結論',['rec1','rec2']],['最終評估結論',['fin1','fin2']]],
     p3:[['確認事項（本人同意）',['agree']]],
-    p4:[['薪資單位（月／時）',['payMonth','payHour']]]
+    p4:[]
   };
   const LABEL={};
   Object.values(SPEC).flat().forEach(f=>{
