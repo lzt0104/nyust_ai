@@ -33,22 +33,22 @@
   .ui{font-family:var(--ui-font);color:var(--text);font-size:13px;line-height:1.5}
   .mono{font-family:var(--mono)}
   /* 頁首 */
-  .top{height:58px;background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:sticky;top:0;z-index:30}
-  .top .brand{display:flex;align-items:center;gap:14px}
-  .top .mark{width:31px;height:31px;border:1px solid rgba(255,255,255,.4);display:grid;place-items:center;font:600 14px/1 "Noto Serif TC","標楷體",serif;color:#fff}
-  .top .bt2{display:flex;flex-direction:column;gap:4px}
-  .top .school{font-size:10px;line-height:1;letter-spacing:.24em;color:rgba(255,255,255,.6)}
-  .top .sys{font-size:15.5px;line-height:1;font-weight:500;letter-spacing:.08em;color:#fff}
-  .top .tools{display:flex;align-items:center;gap:12px}
-  .top .local{font-size:11.5px;color:rgba(255,255,255,.5)}
-  .top .vsep{width:1px;height:20px;background:rgba(255,255,255,.2)}
-  .top .tbtn{font:inherit;font-size:12.5px;line-height:1;color:rgba(255,255,255,.85);background:transparent;border:1px solid rgba(255,255,255,.3);padding:7px 13px;cursor:pointer}
-  .top .tbtn:hover{background:rgba(255,255,255,.08)}
-  .top .gold{font:inherit;font-size:12.5px;line-height:1;font-weight:500;color:var(--navy);background:var(--gold);border:0;padding:8px 15px;cursor:pointer}
-  .top .gold:hover{background:#e2c273}
-  .top .gold.all{background:#fff;color:var(--navy)}
-  .top .gold.all:hover{background:#f1f3f6}
-  .top .mob{display:none}
+  .tophdr{height:58px;background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:sticky;top:0;z-index:30}
+  .tophdr .brand{display:flex;align-items:center;gap:14px}
+  .tophdr .mark{width:31px;height:31px;border:1px solid rgba(255,255,255,.4);display:grid;place-items:center;font:600 14px/1 "Noto Serif TC","標楷體",serif;color:#fff}
+  .tophdr .bt2{display:flex;flex-direction:column;gap:4px}
+  .tophdr .school{font-size:10px;line-height:1;letter-spacing:.24em;color:rgba(255,255,255,.6)}
+  .tophdr .sys{font-size:15.5px;line-height:1;font-weight:500;letter-spacing:.08em;color:#fff}
+  .tophdr .tools{display:flex;align-items:center;gap:12px}
+  .tophdr .local{font-size:11.5px;color:rgba(255,255,255,.5)}
+  .tophdr .vsep{width:1px;height:20px;background:rgba(255,255,255,.2)}
+  .tophdr .tbtn{font:inherit;font-size:12.5px;line-height:1;color:rgba(255,255,255,.85);background:transparent;border:1px solid rgba(255,255,255,.3);padding:7px 13px;cursor:pointer}
+  .tophdr .tbtn:hover{background:rgba(255,255,255,.08)}
+  .tophdr .gold{font:inherit;font-size:12.5px;line-height:1;font-weight:500;color:var(--navy);background:var(--gold);border:0;padding:8px 15px;cursor:pointer}
+  .tophdr .gold:hover{background:#e2c273}
+  .tophdr .gold.all{background:#fff;color:var(--navy)}
+  .tophdr .gold.all:hover{background:#f1f3f6}
+  .tophdr .mob{display:none}
   /* 文件列 */
   .docbar{display:flex;align-items:stretch;justify-content:space-between;background:#fff;border-bottom:1px solid var(--bd);position:sticky;top:58px;z-index:29}
   .tabs{display:flex;overflow-x:auto}
@@ -255,7 +255,7 @@
   @page{size:A4;margin:0}
   @media print{
     body{background:#fff}
-    .top,.docbar,.left,.ptool,.mprint,.notice,.no-print{display:none !important}
+    .tophdr,.docbar,.left,.ptool,.mprint,.notice,.no-print{display:none !important}
     .app{display:block !important}
     .rside{display:block !important;background:#fff}
     .paperbox{padding:0 !important;height:auto !important;overflow:visible !important}
@@ -291,15 +291,16 @@
   .sigslot .sigbtn{border:1px dashed #7b8794;background:#f4f6f8;color:#3e4c59}
   .sigslot .sigdel{border:1px solid #c0c7cf;background:#fff;color:#8b2c2c}
   .sigslot input[type=file]{display:none}
-  .mprint{display:none}
+  .mprint,.msheet,.pdfhelp,.mnav{display:none}
+  .msheet[hidden],.pdfhelp[hidden],.notice[hidden],.guide[hidden]{display:none !important}
   @media print{ .sigslot .sigbtn,.sigslot .sigdel{display:none !important} }
   /* ---------- 手機 ---------- */
   @media screen and (max-width:960px){
     :root{--left-w:1fr}
-    .top{height:auto;padding:10px 14px;position:static}
-    .top .bt2{gap:3px} .top .school{font-size:9.5px;letter-spacing:.16em} .top .sys{font-size:14px}
-    .top .tools{gap:6px} .top .local,.top .vsep,.top .gold{display:none}
-    .top .mob{display:inline-block} .top .tbtn{padding:6px 9px;font-size:12px}
+    .tophdr{height:auto;padding:10px 14px;position:static}
+    .tophdr .bt2{gap:3px} .tophdr .school{font-size:9.5px;letter-spacing:.16em} .tophdr .sys{font-size:14px}
+    .tophdr .tools{gap:6px} .tophdr .local,.tophdr .vsep,.tophdr .gold{display:none}
+    .tophdr .mob{display:inline-block} .tophdr .tbtn{padding:6px 9px;font-size:12px}
     .docbar{position:static;flex-direction:column}
     .tabs button{padding:0 12px;height:46px} .tabs button .tag{display:none}
     .progress{border-left:0;border-top:1px solid var(--bd2);padding:8px 14px;justify-content:flex-end}
@@ -316,19 +317,61 @@
     #mform .fld{grid-template-columns:1fr;gap:5px 0}
     #mform .fld.top>label{padding-top:0}
     #mform .fld .req{grid-column:1}
-    .mprint{display:block;position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--bd);z-index:20}
-    .mprint{display:flex;gap:8px}
-    .mprint button{flex:1;font:inherit;font-size:14px;font-weight:500;padding:12px 6px;border:0;background:var(--gold);color:var(--navy)}
-    .mprint button.all{background:#fff;border:1px solid var(--navy)}
+    .mprint{display:flex;flex-direction:column;gap:8px;position:fixed;left:0;right:0;bottom:0;padding:8px 12px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--bd);z-index:20;box-shadow:0 -4px 14px rgba(0,0,0,.08)}
+    .mstat{font:inherit;display:flex;justify-content:space-between;align-items:center;width:100%;padding:8px 12px;border:1px solid #e8c4c4;background:#fdf3f3;color:var(--red);font-size:13px;cursor:pointer}
+    .mstat.ok{border-color:#bfd9c8;background:#eef7f1;color:var(--green)}
+    .mstat .ms-r{font-size:12px;opacity:.8}
+    .mbtns{display:flex;gap:8px}
+    .mbtns button{flex:1;font:inherit;font-size:15px;font-weight:600;padding:13px 6px;border:0;background:var(--gold);color:var(--navy)}
+    .mbtns button.all{flex:.7;background:#fff;border:1px solid var(--navy);font-weight:500}
     .skipg{border-left:0;padding:8px 14px;border-top:1px solid var(--bd2)}
-    body{padding-bottom:80px}
+    body{padding-bottom:132px}
+    #mform h3{position:sticky;top:0;z-index:3}
+    #mform .fld input[type=text],#mform .fld input[type=number],#mform .fld input[type=tel],#mform .fld input[type=email],#mform .fld input[type=date],#mform .fld select{height:44px}
+    #mform .fld textarea{min-height:5.5em}
+    #mform .chips label{padding:8px 0;font-size:15px}
+    #mform .chips input{width:22px;height:22px}
+    #mform .chips input[type=checkbox]:checked::after{left:7px;top:2px;width:6px;height:12px}
+    #mform .chips.rate label{width:44px;height:40px;font-size:15px}
+    #mform .fld>label{font-size:14px;color:var(--text)}
+    #mform .inl input,#mform .inl select{min-width:60px}
+    #mform [data-k]{scroll-margin-top:70px;scroll-margin-bottom:160px}
+    .mnav{display:flex;gap:10px;padding:18px 24px 6px}
+    .mnav button{flex:1;font:inherit;font-size:14px;padding:12px;border:1px solid var(--navy);background:#fff;color:var(--navy)}
+    .mnav button:disabled{opacity:.35}
+    .mnav button.next{background:var(--navy);color:#fff}
+    .notice.err{display:none}
+    .msheet{display:block;position:fixed;left:0;right:0;bottom:0;max-height:70vh;overflow:auto;background:#fff;border-top:3px solid var(--red);box-shadow:0 -6px 20px rgba(0,0,0,.18);z-index:40;padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+    .msh-head{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--bd2);position:sticky;top:0;background:#fff}
+    .msh-head b{font-size:14px;color:var(--red)}
+    .msh-head .x{font:inherit;font-size:13px;padding:6px 12px;border:1px solid var(--bd);background:#fff;white-space:nowrap;flex:none;margin-left:10px}
+    .msh-body{padding:6px 0}
+    .msh-body button{font:inherit;display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left;padding:12px 16px;border:0;border-bottom:1px solid var(--row);background:#fff;font-size:14px;color:var(--text)}
+    .msh-body button::after{content:"前往 ›";font-size:12px;color:var(--navy)}
+    .msh-body .doc{padding:10px 16px 4px;font-size:12px;color:var(--muted2);letter-spacing:.1em}
+    .pdfhelp{position:fixed;inset:0;background:rgba(20,36,60,.55);z-index:50;display:flex;align-items:flex-end}
+    .ph-card{background:#fff;width:100%;max-height:85vh;overflow:auto;border-top:3px solid var(--gold);padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+    .ph-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--bd2)}
+    .ph-head b{font-size:15px;color:var(--navy)}
+    .ph-head .x{font:inherit;font-size:16px;border:0;background:transparent;padding:4px 8px;color:var(--muted)}
+    .ph-body{padding:12px 16px;font-size:14px;line-height:1.75}
+    .ph-body ol{margin:6px 0 0;padding-left:1.4em} .ph-body li{margin-bottom:6px}
+    .ph-body .warn{background:#fdf3f3;border-left:3px solid var(--red);padding:10px 12px;margin-bottom:12px;color:#7a2e2e}
+    .ph-body .tip{background:#fdfaf2;border-left:3px solid #b8892e;padding:10px 12px;margin-top:12px;color:#6b5320;font-size:13px}
+    .ph-body .copy{font:inherit;font-size:13px;margin-top:8px;padding:8px 12px;border:1px solid var(--navy);background:#fff;color:var(--navy)}
+    .ph-foot{padding:12px 16px 0}
+    .ph-go{width:100%;font:inherit;font-size:16px;font-weight:600;padding:14px;border:0;background:var(--gold);color:var(--navy)}
+    .dwrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .dwrap input[type=date]{font:inherit;font-size:16px;height:44px;padding:0 10px;border:1px solid var(--bd);background:#fff;color:var(--text);flex:1 1 170px;min-width:0;-webkit-appearance:none;appearance:none}
+    .dwrap .roc{font-size:13px;color:var(--navy);white-space:nowrap}
+    .dwrap .roc.empty{color:var(--faint)}
   }
 </style>
 </head>
 <body>
 
 <!-- ============ 系統介面 ============ -->
-<header class="top ui">
+<header class="tophdr ui">
   <div class="brand">
     <div class="mark">雲</div>
     <div class="bt2"><span class="school">國立雲林科技大學 技優專班</span><span class="sys">實習申請文件製表系統</span></div>
@@ -561,7 +604,7 @@
   <div class="sig">
     <p>監護人姓名：<span class="sigfield"><input class="u w l" data-k="guardian"><span class="sigslot" data-sig="sigGuardian"></span></span>　（簽章）<span class="muted">　請加蓋監護人私章</span></p>
     <p>連絡電話：　<input class="u w l" data-k="guardianTel"></p>
-    <p>監護人意見：<textarea placeholder="點此填寫" rows="2" data-k="guardianNote" style="display:inline-block;width:100%;border-bottom:1px solid #000"></textarea></p>
+    <p>監護人意見：<textarea placeholder="點此填寫（無意見請填「無」）" rows="2" data-k="guardianNote" style="display:inline-block;width:100%;border-bottom:1px solid #000"></textarea></p>
   </div>
   <p class="date">中　華　民　國　<input class="n" data-k="dy">　年　<input class="n" data-k="dm">　月　<input class="n" data-k="dd">　日<span class="hintx no-print">須為開學日以前</span></p>
 </div>
@@ -600,7 +643,21 @@
 </div></div>
 </main>
 </div>
-<div class="mprint ui"><button id="btnPrint2" type="button">列印 ／ 匯出 PDF（目前文件）</button><button id="btnPrintAll2" type="button" class="all">五份合併列印</button></div>
+<div class="mprint ui">
+  <button type="button" class="mstat" id="mstat"><span class="ms-l">尚有 <b id="msN">0</b> 項未填</span><span class="ms-r">查看 ▴</span></button>
+  <div class="mbtns"><button id="btnPrint2" type="button">列印 ／ 匯出 PDF</button><button id="btnPrintAll2" type="button" class="all">合併列印</button></div>
+</div>
+<div class="msheet ui" id="msheet" hidden>
+  <div class="msh-head"><b id="mshTitle">尚未填寫的欄位</b><button type="button" class="x" id="mshClose">關閉</button></div>
+  <div class="msh-body" id="mshBody"></div>
+</div>
+<div class="pdfhelp ui" id="pdfhelp" hidden>
+  <div class="ph-card">
+    <div class="ph-head"><b>如何在手機存成 PDF</b><button type="button" class="x" id="phClose">✕</button></div>
+    <div class="ph-body" id="phBody"></div>
+    <div class="ph-foot"><button type="button" class="ph-go" id="phGo">開始列印</button></div>
+  </div>
+</div>
 
 <script>
 (function(){
@@ -637,18 +694,18 @@
       {t:'total'},C('評估結論',[chk('rec1','推薦實習（21分(含)以上）'),chk('rec2','不推薦實習（20分(含)以下）')]),
       A('remark','補充說明（請說明推薦、不推薦的理由）'),C('最終評估結論',[chk('fin1','推薦實習'),chk('fin2','不推薦實習')]),
       {t:'sig',k:'sigTutor',l:'導師簽章（選填）'},{t:'sig',k:'sigDirector',l:'系所單位主管簽章（選填）'}],
-    p2:[...COMMON,H('壹、實習單位代表'),HRS,T('rep','代表人姓名'),{t:'sig',k:'sigRep',l:'代表人簽章（選填）'},T('repTitle','職稱'),T('repTel','連絡電話',{tel:true}),NOTE('立同意書單位＝實習單位名稱（自動帶入）。代表人簽章：列印後蓋章。')],
+    p2:[...COMMON,H('壹、實習單位代表'),HRS,T('rep','代表人姓名（選填，可留白手寫）'),{t:'sig',k:'sigRep',l:'代表人簽章（選填）'},T('repTitle','職稱（選填）'),T('repTel','連絡電話（選填）',{tel:true}),NOTE('立同意書單位＝實習單位名稱（自動帶入）。代表人簽章：列印後蓋章。')],
     p3:[...COMMON,H('壹、切結事項'),C('確認事項',[chk('agree','本人同意於該學年度學期至實習單位進行實習')]),
       {t:'gbtn'},{t:'row',l:'尚未修習之學分',items:[N('reqCr','必修尚餘'),N('eleCr','選修尚餘')]},{t:'sig',k:'sigStudent',l:'立切結書人簽名（選填）'}],
     p4:[...COMMON,H('壹、實習與監護人資料'),T('siteAddr','實習地點地址'),HRS,A('jobDesc','實習工作內容'),
       T('payAmt','薪資（元）'),C('薪資單位',[chk('payMonth','月'),chk('payHour','時')]),C('實習期間提供',[chk('giveMeal','膳食'),chk('giveDorm','住宿')]),
-      T('guardian','監護人姓名'),{t:'sig',k:'sigGuardian',l:'監護人簽章（選填）'},T('guardianTel','監護人連絡電話',{tel:true}),A('guardianNote','監護人意見')],
+      T('guardian','監護人姓名（選填，可留白手寫）'),{t:'sig',k:'sigGuardian',l:'監護人簽章（選填）'},T('guardianTel','監護人連絡電話（選填）',{tel:true}),A('guardianNote','監護人意見（必填，沒有意見請填「無」）')],
     p5:[...COMMON,H('壹、聯絡與機構資料'),T('phone','學生手機',{tel:true}),T('email','學生EMAIL',{email:true}),T('orgAddr','實習機構地址'),T('contact','實習單位連絡人'),T('contactTel','實習單位連絡人電話',{tel:true}),HRS,
       H('貳、實習計畫內容','空白不夠時列印會自動配頁'),A('planTopic','1. 實習主題'),A('planIntro','2. 實習單位簡介'),A('planMotive','3. 實習動機與目的'),A('planContent','4. 預計實習內容'),A('planResult','5. 預期成果'),{t:'sig',k:'sigTeacher',l:'授課教師簽章（選填）'},{t:'sig',k:'sigChief',l:'主任簽章（選填）'}]
   };
   function inp(f){
     const type=f.num?'number':f.tel?'tel':f.email?'email':'text';
-    return `<input type="${type}" data-k="${f.k}" ${f.num?'inputmode="numeric"':''} placeholder="${f.l||''}">`;
+    return `<input type="${type}" data-k="${f.k}" ${f.num?'inputmode="numeric"':''} enterkeyhint="next" placeholder="${f.l||''}">`;
   }
   const sel=(k,opts)=>`<select data-k="${k}">${opts.map(o=>Array.isArray(o)?`<option value="${o[0]}">${o[1]}</option>`:`<option>${o}</option>`).join('')}</select>`;
   function render(f){
@@ -659,7 +716,8 @@
       case 'area': return `<div class="fld top"><label>${f.l}</label><textarea data-k="${f.k}" rows="2"></textarea></div>`;
       case 'sel': return `<div class="fld"><label>${f.l}</label>${sel(f.k,f.opts)}</div>`;
       case 'row': return `<div class="fld"><label>${f.l}</label><div class="inl">${f.items.map(i=>i.t==='sel'?sel(i.k,i.opts):inp(i)).join('')}</div></div>`;
-      case 'date': return `<div class="fld"><label>${f.l}</label><div class="inl"><input type="number" inputmode="numeric" data-k="${f.p}y" placeholder="年"><span>年</span><input type="number" inputmode="numeric" data-k="${f.p}m" placeholder="月"><span>月</span><input type="number" inputmode="numeric" data-k="${f.p}d" placeholder="日"><span>日</span></div>${f.hint?`<span class="lh">${f.hint}</span>`:''}</div>`;
+      case 'date': if(isMobile()) return `<div class="fld top"><label>${f.l}</label><div class="dwrap"><input type="date" data-dk="${f.p}"><span class="roc empty" data-roc="${f.p}">未填</span></div>${f.hint?`<span class="lh">${f.hint}</span>`:''}</div>`;
+        return `<div class="fld"><label>${f.l}</label><div class="inl"><input type="number" inputmode="numeric" data-k="${f.p}y" placeholder="年"><span>年</span><input type="number" inputmode="numeric" data-k="${f.p}m" placeholder="月"><span>月</span><input type="number" inputmode="numeric" data-k="${f.p}d" placeholder="日"><span>日</span></div>${f.hint?`<span class="lh">${f.hint}</span>`:''}</div>`;
       case 'chips': return `<div class="fld top"><label>${f.l}</label><div class="chips">${f.items.map(i=>`<label><input type="checkbox" data-k="${i.k}">${i.l}</label>`).join('')}</div></div>`;
       case 'rate': return `<div class="fld"><label>${f.l}</label><div class="chips rate">${[5,4,3,2,1].map(v=>`<label><input type="radio" name="m_${f.k}" value="${v}" data-k="${f.k}">${v}</label>`).join('')}</div></div>`;
       case 'sig': return `<div class="fld top"><label>${f.l}</label><div class="sigbox" data-sig="${f.k}"></div></div>`;
@@ -681,9 +739,37 @@
       el.addEventListener('input',onChange); el.addEventListener('change',onChange);
     });
     mform.querySelectorAll('textarea').forEach(grow);
+    if(isMobile()){
+      mform.querySelectorAll('input[data-dk]').forEach(el=>{ syncDatePicker(el); el.addEventListener('change',()=>onDatePick(el)); });
+      const order=['p1','p2','p3','p4','p5'], i=order.indexOf(p);
+      const nav=document.createElement('div'); nav.className='mnav';
+      nav.innerHTML=`<button type="button" class="prev" ${i<=0?'disabled':''}>‹ 上一份</button><button type="button" class="next" ${i>=4?'disabled':''}>下一份 ›</button>`;
+      nav.querySelector('.prev').addEventListener('click',()=>show(order[i-1]));
+      nav.querySelector('.next').addEventListener('click',()=>show(order[i+1]));
+      mform.appendChild(nav);
+      mform.querySelectorAll('input,select,textarea').forEach(el=>{
+        el.addEventListener('focus',()=>{ setTimeout(()=>{ try{ el.scrollIntoView({block:'center',behavior:'smooth'}); }catch(e){} },250); });
+        if(el.tagName!=='TEXTAREA') el.addEventListener('keydown',ev=>{ if(ev.key==='Enter'){ ev.preventDefault(); const all=[...mform.querySelectorAll('input:not([type=file]):not([type=checkbox]):not([type=radio]),select,textarea')]; const n=all[all.indexOf(el)+1]; if(n) n.focus(); else el.blur(); } });
+      });
+    }
     total();
     renderSigs();
     updateCounts();
+  }
+  /* ---- 手機用原生日期選擇器 ↔ 民國 年/月/日 ---- */
+  function syncDatePicker(el){
+    const p=el.dataset.dk, y=+data[p+'y'], m=+data[p+'m'], d=+data[p+'d'];
+    const roc=el.parentElement.querySelector('[data-roc]');
+    if(y&&m&&d){ el.value=`${String(y+1911).padStart(4,'0')}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`; roc.textContent=`民國 ${y} 年 ${m} 月 ${d} 日`; roc.classList.remove('empty'); }
+    else { el.value=''; roc.textContent='未填'; roc.classList.add('empty'); }
+  }
+  function onDatePick(el){
+    const p=el.dataset.dk; const v=el.value; let y='',m='',d='';
+    if(v){ const [Y,M,D]=v.split('-').map(Number); y=Y-1911; m=M; d=D; }
+    data[p+'y']=y; data[p+'m']=m; data[p+'d']=d; sync(p+'y',y); sync(p+'m',m); sync(p+'d',d);
+    syncDatePicker(el); save(); scheduleFit(); scheduleStatus();
+    document.querySelectorAll(`[data-k="${p}y"].missing,[data-k="${p}m"].missing,[data-k="${p}d"].missing`).forEach(e=>{ if(v) e.classList.remove('missing'); });
+    if(v){ const row=el.closest('.fld'); if(row){ row.classList.remove('missing-row'); const r=row.querySelector('.req'); if(r) r.remove(); } }
   }
 
   /* ---- 評分列（5~1 單選） ---- */
@@ -804,7 +890,8 @@
   document.querySelectorAll('textarea').forEach(grow);
 
   /* ---- 必填檢查 ---- */
-  const OPT=new Set(['ev4t','ins4t','q5t','dormAmt','dormDist','dormNote','dormFree','dormPay','payAmt','remark','guardianNote','deptManual']);
+  /* 選填：條件式欄位，以及簽章區（代表人／監護人的姓名、職稱、電話）— 可留白列印後手寫、蓋章 */
+  const OPT=new Set(['ev4t','ins4t','q5t','dormAmt','dormDist','dormNote','dormFree','dormPay','payAmt','remark','deptManual','rep','repTitle','repTel','guardian','guardianTel']);
   const GROUPS={
     p1:[['評估方式',['ev1','ev2','ev3','ev4']],['提供薪資額度',['payYes','payNo']],['住宿',['dorm','dormSelf']],['保險事宜',['ins1','ins2','ins3','ins4','insNone']],['膳食',['mealSelf','mealCo']],['廠商資格',['q1','q2','q3','q4','q5']],['實習機會',['op1','op2','op3']],['評估結論',['rec1','rec2']],['最終評估結論',['fin1','fin2']]],
     p3:[['確認事項（本人同意）',['agree']]],
@@ -852,10 +939,38 @@
       const dot=document.querySelector('#tabs button[data-p='+p+'] .dot'); if(dot){ dot.className='dot '+(st.state==='none'?'':st.state); }
     });
     const pct=N?Math.round(D/N*100):0;
+    updateMobileBar();
     document.getElementById('progFill').style.width=pct+'%';
     document.getElementById('progPct').textContent=pct+'%';
     updateCounts();
   }
+  function updateMobileBar(){
+    const p=activeId(); const bar=document.getElementById('mstat'); if(!bar) return;
+    if(p==='p4'&&skipG()){ bar.className='mstat ok'; bar.querySelector('.ms-l').innerHTML='已勾選免繳，此份不需填寫'; return; }
+    const labels=[...new Set(missingList(p).map(m=>m.l))];
+    bar.className='mstat'+(labels.length?'':' ok');
+    bar.querySelector('.ms-l').innerHTML=labels.length?`本份尚有 <b>${labels.length}</b> 項未填`:'本份已填完，可以匯出 PDF';
+    bar.querySelector('.ms-r').textContent=labels.length?'查看 ▴':'✓';
+  }
+  function jumpTo(k){
+    document.getElementById('msheet').hidden=true;
+    let el=mform.querySelector(`[data-k="${k}"]`);
+    if(!el){ const m=k.match(/^(.+)[ymd]$/); if(m) el=mform.querySelector(`input[data-dk="${m[1]}"]`); }
+    if(!el) el=document.querySelector(`.page.active [data-k="${k}"]`);
+    if(!el) return;
+    el.scrollIntoView({behavior:'smooth',block:'center'});
+    setTimeout(()=>{ try{ el.focus({preventScroll:true}); }catch(e){} },400);
+  }
+  function showMissingSheet(p){
+    const sheet=document.getElementById('msheet'), body=document.getElementById('mshBody');
+    const missing=missingList(p); if(!missing.length){ sheet.hidden=true; return; }
+    const seen=new Set(); body.innerHTML='';
+    missing.forEach(m=>{ if(seen.has(m.l)) return; seen.add(m.l); const b=document.createElement('button'); b.type='button'; b.textContent=m.l; const k=m.k||m.group[0]; b.addEventListener('click',()=>jumpTo(k)); body.appendChild(b); });
+    document.getElementById('mshTitle').textContent=DOCNAME[p]+'：尚有 '+seen.size+' 項未填（點一下前往）';
+    sheet.hidden=false;
+  }
+  document.getElementById('mstat').addEventListener('click',()=>{ const p=activeId(); if(missingList(p).length) showMissingSheet(p); });
+  document.getElementById('mshClose').addEventListener('click',()=>{ document.getElementById('msheet').hidden=true; });
   function updateCounts(){
     const p=activeId(); const spec=specFor(p);
     const hs=mform.querySelectorAll('h3'); let hi=-1; const groups=[];
@@ -887,6 +1002,8 @@
     const labels=[...new Set(missing.map(m=>m.l))];
     box.innerHTML='<b>尚有 '+labels.length+' 項未填寫，填完才能列印：</b><ul>'+labels.map(l=>'<li>'+l+'</li>').join('')+'</ul>';
     box.hidden=false;
+    updateMobileBar();
+    if(isMobile()){ showMissingSheet(p); return false; }
     const first=mform.querySelector('.missing')||sec.querySelector('.missing'); (first||box).scrollIntoView({behavior:'smooth',block:'center'});
     if(first&&first.focus) try{ first.focus({preventScroll:true}); }catch(e){}
     return false;
@@ -908,6 +1025,8 @@
     applyZoom();
     document.getElementById('guardNote').hidden=(p!=='p4');
     document.getElementById('creditGuide').hidden=(p!=='p3');
+    document.getElementById('msheet').hidden=true;
+    updateMobileBar();
     document.getElementById('valMsg').hidden=true;
     document.querySelectorAll('.missing').forEach(e=>e.classList.remove('missing'));
     try{ localStorage.setItem(KEY+':tab',p); }catch(e){}
@@ -982,8 +1101,27 @@
     updateTitle();
     fit(activeId());
     document.querySelectorAll('.page.active textarea').forEach(grow);
+    if(isMobile()){ showPdfHelp(()=>window.print()); return; }
     setTimeout(()=>{ window.print(); },50);
   }
+  /* ---- 手機匯出 PDF 引導 ---- */
+  function showPdfHelp(go){
+    const ua=navigator.userAgent||'';
+    const inApp=/Line\/|FBAN|FBAV|Instagram|MicroMessenger/.test(ua);
+    const ios=/iPhone|iPad|iPod/.test(ua);
+    const body=document.getElementById('phBody');
+    let html='';
+    if(inApp){ html+=`<div class="warn"><b>你正在 LINE／Facebook／Instagram 的內建瀏覽器中</b>，這裡通常無法列印或存 PDF。請點右上角「⋯」選「用瀏覽器開啟」（或複製網址貼到 Safari／Chrome），資料在同一支手機上會保留。<br><button type="button" class="copy" id="phCopy">複製本頁網址</button></div>`; }
+    if(ios){ html+=`<div><b>iPhone / iPad（Safari）</b><ol><li>按下方「開始列印」後會出現列印畫面。</li><li>在列印畫面用兩指<b>放大</b>頁面預覽，或點右上角「<b>分享</b>」圖示。</li><li>選「<b>儲存到檔案</b>」，就會存成 PDF；也可以直接傳到 LINE 或 Email。</li></ol></div>`; }
+    else { html+=`<div><b>Android（Chrome）</b><ol><li>按下方「開始列印」後會出現列印畫面。</li><li>上方「印表機」選「<b>另存為 PDF</b>」。</li><li>點右上角圓形的<b>儲存</b>按鈕，選擇存放位置即可。</li></ol></div>`; }
+    html+=`<div class="tip">檔名會自動命名為「學號-姓名-文件名稱」。若列印畫面沒有出現，請改用 Safari（iPhone）或 Chrome（Android）開啟本頁。</div>`;
+    body.innerHTML=html;
+    const cp=document.getElementById('phCopy'); if(cp) cp.addEventListener('click',()=>{ try{ navigator.clipboard.writeText(location.href).then(()=>{ cp.textContent='已複製網址'; }); }catch(e){ prompt('請複製網址',location.href); } });
+    const wrap=document.getElementById('pdfhelp'); wrap.hidden=false;
+    const goBtn=document.getElementById('phGo'); const nb=goBtn.cloneNode(true); goBtn.replaceWith(nb);
+    nb.addEventListener('click',()=>{ wrap.hidden=true; setTimeout(go,80); });
+  }
+  document.getElementById('phClose').addEventListener('click',()=>{ document.getElementById('pdfhelp').hidden=true; });
   /* ---- 五份合併列印 ---- */
   function doPrintAll(){
     const docs=['p1','p2','p3','p4','p5'].filter(p=>!(p==='p4'&&skipG()));
@@ -996,6 +1134,7 @@
       return;
     }
     box.hidden=true;
+    if(isMobile()&&!doPrintAll._go){ showPdfHelp(()=>{ doPrintAll._go=true; doPrintAll(); doPrintAll._go=false; }); return; }
     const cur=activeId();
     docs.forEach(p=>{ document.getElementById(p).classList.add('active'); fit(p); document.querySelectorAll('#'+p+' textarea').forEach(grow); });
     document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('lastdoc'));
