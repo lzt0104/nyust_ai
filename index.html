@@ -263,8 +263,8 @@
     #mform{display:none !important}
     .page.active{display:block !important}
     main{padding:0 !important}
-    .page{width:210mm;margin:0;padding:0}
-    .sheet{width:210mm;height:auto;min-height:0;padding:20mm;margin:0 !important;box-shadow:none;overflow:visible;break-after:page;page-break-after:always;break-inside:avoid}
+    .page{width:auto;margin:0;padding:0}
+    .sheet{width:100vw;height:100vh;min-height:0;padding:20mm;margin:0 !important;box-shadow:none;overflow:hidden;box-sizing:border-box;break-after:page;page-break-after:always;break-inside:avoid}
     .sheet+.sheet{margin-top:0 !important}
     .sheet:last-child{break-after:auto;page-break-after:auto}
     .page:not(.active){display:none}
@@ -859,7 +859,7 @@
   }
 
   /* ---- 自動調整字級，讓每份文件填滿頁面（依實際字型量測） ---- */
-  const PAGE_H=257/25.4*96; /* A4 高 297mm − 上下邊界各 20mm */
+  const PAGE_H=239/25.4*96; /* 以 Letter（279mm）− 上下邊界各 20mm 為準，A4 與 Letter 印表機都放得下 */
   const FIT={p1:{pages:1,max:14,min:9,safety:14},p2:{pages:1,max:12.5,min:8.5,safety:14},p3:{pages:1,max:13,min:8.5,safety:14},p4:{pages:1,max:12.5,min:8.5,safety:14},p5:{pages:1,max:13,min:9,safety:14}};
   function contentH(sec){ let h=0; sec.querySelectorAll('.sheet').forEach(sh=>{ const r=document.createRange(); r.selectNodeContents(sh); h=Math.max(h,r.getBoundingClientRect().height); }); return h; }
   function fit(id){
