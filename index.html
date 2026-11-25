@@ -458,9 +458,6 @@
   #p6 table.rt-t td.lb{width:48mm;background:#f2f2f2;text-align:center;vertical-align:middle}
   #p6 table.rt-t td.lb.tp{text-align:left;vertical-align:top}
   #p6 table.rt-t td.sc{background:#e4e4e4;font-weight:bold}
-  #p6 .rsig{display:flex;padding:4pt 10pt 0}
-  #p6 .rsig span{width:50%}
-  #p6 .rsig img{height:12mm;vertical-align:middle}
   #p6 .wkt td{font-family:Arial,"標楷體","DFKai-SB","BiauKai",serif;vertical-align:middle}
   #p6 .wkt td.wc{height:15mm;vertical-align:top}
   #p6 .wkt td.wh{text-align:center;font-weight:bold;font-size:15pt;line-height:1.5}
@@ -834,7 +831,6 @@ window.RptDocx=(function(){
       weekHdr: ai?'國立雲林科技大學資訊管理系（人工智慧技優專班）':'國立雲林科技大學'+prog,
       period: (hasD(d,'s')||hasD(d,'e'))?`${dstr(d,'s')}至${dstr(d,'e')}`:'',
       rdate: dstr(d,'rd')||dstr(d,'e'),
-      planDates: `${d.sy||''}年${d.sm||''}月${d.sd||''}日至${d.ey||''}年${d.em||''}月${d.ed||''}日，每週${d.hrsWeek||''}小時，共${d.hrsTotal||''}小時`,
       fileName: `${prog.replace('技優專班','')}_${d.ay||''}-${sem}${course.replace('（','(').replace('）',')')}結案報告_${String(d.name||'').trim()||'XXX'}.docx`
     };
   }
@@ -843,7 +839,6 @@ window.RptDocx=(function(){
     self:'對自我和學校課程的檢視', adv:'對實習機構與日後想來該機構實習的學弟妹之建議', future:'實習後之未來期許、生涯規劃及目標',
     app:'附錄', log:'實習工作紀錄', media:'照片、圖檔、影音檔', contract:'實習合約書', cvZh:'中文履歷表', cvEn:'英文履歷表'
   };
-  const PLAN_ROWS=[['1.實習主題：','planTopic'],['2.實習單位簡介：','planIntro'],['3.實習動機與目的：','planMotive'],['4.預計實習內容：','planContent'],['5.預期成果：','planResult']];
   const WEEK_ROWS=[['實習內容','c'],['實習觀察記錄','o'],['實習心得與反思','r'],['實習所遇到的困難','d'],['解決方法','s'],['其他事項','x']];
 
   /* ---- ZIP（不壓縮） ---- */
@@ -870,9 +865,9 @@ window.RptDocx=(function(){
   }
 
   /* ---- 主程式 ----
-     model = { d: 表單資料, tpl: 範本零件, imgs: {id:{bytes,w,h,ext}}, sigs: {sigTeacher:{bytes,w,h,ext}, ...} } */
+     model = { d: 表單資料, tpl: 範本零件, imgs: {id:{bytes,w,h,ext}} } */
   function build(model){
-    const d=model.d||{}, tpl=model.tpl, imgs=model.imgs||{}, sigs=model.sigs||{}, I=info(d);
+    const d=model.d||{}, tpl=model.tpl, imgs=model.imgs||{}, I=info(d);
     const media=[], mediaKey={}; let dp=10, bm=100;
     /* 粗估頁碼（Word 開啟時會更新目錄，這裡只是給不支援更新的軟體一個接近的值） */
     const LPP=29; let pg=1, ln=0;
@@ -923,27 +918,15 @@ window.RptDocx=(function(){
         return P({ind:b.ctx?IN(3):IND2}, R(b.t));
       }).join('');
     }
-    const cellParas=(s,o,cpl,min)=>{ const a=lines(s); const r=a.map(t=>P({}, t?R(t,o):'')); let n=0; a.forEach(t=>n+=nl(t,cpl)); while(r.length<(min||1)){ r.push(P()); n++; } return {xml:r, n:Math.max(n,min||1)}; };
-
     let body='';
-    /* 壹、實習計畫書（帶入第 05 份） */
+    /* 壹、實習計畫書：放學期初已簽名的計畫書圖檔（每張一頁寬） */
     body+=head(1,HEAD.plan);
-    const planScan=(d.galPlan||[]).map(p=>({p,img:imgs[p.id]})).filter(x=>x.img);
-    if(planScan.length){
-      planScan.forEach(x=>{ const im=pic(x.p.id,x.img,9628,13400); est.add(im.hT/500); body+=P({sp:SP1,jc:'center'},im.xml); });
-    } else {
-      body+=P({jc:'center',rpr:'<w:b/><w:bCs/>'+SZ(30)}, R(`國立雲林科技大學${I.prog} ${I.course} 實習計畫書`,{b:1,sz:30})); est.add(1.2);
-      const G=[2721,6907], rows=[];
-      const sec=t=>{ est.add(1); return tr([tc(9628,P({},R(t,{b:1})),{span:2,fill:'E4E4E4'})],{cant:1}); };
-      const row=(label,val,top)=>{ const c=cellParas(val,null,29,1); est.add(c.n); return tr([tc(G[0],P({jc:top?'left':'center'},R(label)),{fill:'F2F2F2',va:top?'top':'center'}),tc(G[1],c.xml)]); };
-      rows.push(sec('基本資料'));
-      [['學生學號：',d.sid],['學生姓名：',d.name],['學生手機：',d.phone],['學生EMAIL：',d.email],['實習機構名稱：',d.org],['實習機構地址：',d.orgAddr],['實習單位連絡人：',d.contact],['實習單位連絡人電話：',d.contactTel],['實習日期：',I.planDates]].forEach(([l,v])=>rows.push(row(l,v)));
-      rows.push(sec('實習計劃書'));
-      PLAN_ROWS.forEach(([l,k])=>rows.push(row(l,d[k],true)));
-      body+=tbl(G,rows);
-      const sigCell=(label,k)=>{ const im=sigs[k]; return tc(4814, P({sp:SP1}, R(label)+(im?pic('sig:'+k,im,2600,850).xml:''))); };
-      body+=P({sp:SP1})+tbl([4814,4814],[tr([sigCell('授課教師簽章：','sigTeacher'),sigCell('主任簽章：','sigChief')])],true)+P({sp:SP1}); est.add(3);
-    }
+    const docImgs=(arr,hint)=>{
+      const it=(arr||[]).map(p=>({p,img:imgs[p.id]})).filter(x=>x.img);
+      if(!it.length) return hint?P({sp:SP1,ind:IND2},R(hint,{rf:HINT,b:1,color:'FF0000'})):P({ind:IND2});
+      return it.map(x=>{ const im=pic(x.p.id,x.img,9628,13400); est.add(im.hT/500); return P({sp:SP1,jc:'center'},im.xml); }).join('');
+    };
+    body+=docImgs(d.galPlan,'（請貼上自己的實習計畫書）');
     body+=head(1,HEAD.gain)+essay(d.rptGain);
     body+=head(1,HEAD.sug)+head(2,HEAD.self,{b:1})+essay(d.rptSelf)+head(2,HEAD.adv,{b:1})+essay(d.rptAdvice);
     body+=head(1,HEAD.future)+essay(d.rptFuture);
@@ -997,11 +980,6 @@ window.RptDocx=(function(){
       if(!it.length&&!links.length) body+=P({sp:SP1});
     }
     /* 三～五：合約書、履歷表（每張圖一頁寬） */
-    const docImgs=(arr,hint)=>{
-      const it=(arr||[]).map(p=>({p,img:imgs[p.id]})).filter(x=>x.img);
-      if(!it.length) return hint?P({sp:SP1},R(hint,{rf:HINT,b:1,color:'FF0000'})):P({ind:IND2});
-      return it.map(x=>{ const im=pic(x.p.id,x.img,9628,13400); est.add(im.hT/500); return P({sp:SP1,jc:'center'},im.xml); }).join('');
-    };
     body+=head(2,HEAD.contract,{num:9,k0:1,pb:1})+docImgs(d.galContract,'（請貼上自己的實習合約書）');
     body+=head(2,HEAD.cvZh,{num:9,k0:1,pb:1})+docImgs(d.galCvZh);
     body+=head(2,HEAD.cvEn,{num:9,k0:1,pb:1})+docImgs(d.galCvEn);
@@ -1042,7 +1020,7 @@ window.RptDocx=(function(){
     media.forEach(m=>files.push({name:'word/'+m.name,data:m.bytes}));
     return zip(files);
   }
-  return {build, info, lines, blocks, zh, gradeStr, HEAD, PLAN_ROWS, WEEK_ROWS};
+  return {build, info, lines, blocks, zh, gradeStr, HEAD, WEEK_ROWS};
 })();
 </script>
 <script>
@@ -1091,7 +1069,7 @@ window.RptDocx=(function(){
     p6:[NOTE('結案報告會依學校 Word 範本產生 .docx，下載後仍可在 Word 裡繼續修改。用 Word 開啟時若詢問「是否更新欄位」，請按「是」，目錄頁碼就會自動更新。<br>心得內以「一、」「（一）」「1.」開頭的短句會自動變成粗體小標，「（1）」開頭的段落會縮排。上傳的圖片只存在這台裝置的瀏覽器中。'),
       H('基本資料','與申請文件共用，修改會同步'),COMMON[1],COMMON[2],COMMON[3],T('sid','學號'),T('name','學生姓名'),N('grade','年級'),T('phone','學生手機',{tel:true}),T('org','實習單位名稱'),T('siteAddr','實習地點（地址）'),D('s','實習開始日（民國）'),D('e','實習結束日（民國）'),
       H('封面資料'),T('rptUnit','實習部門（選填）'),T('rptSup','實習督導（業界）'),T('rptAdv','輔導老師'),{t:'date',p:'rd',l:'報告日期（民國）',hint:'封面最下方的日期，預設為實習結束日'},
-      H('壹、實習計畫書','自動帶入第 05 份，或上傳已簽名的掃描檔'),{t:'plan'},{t:'gal',k:'galPlan',l:'已簽名的計畫書掃描檔（選填）',hint:'上傳後會以掃描檔取代自動產生的計畫書表格，建議上傳有授課教師簽章的版本，每張排一頁。'},
+      H('壹、實習計畫書','上傳學期初已簽名的計畫書'),{t:'gal',k:'galPlan',l:'實習計畫書圖檔',hint:'請上傳學期初交的那份實習計畫書（有授課教師簽章的那一頁）的掃描檔或手機照片，每張排一頁。'},
       H('貳、實習成果及心得','具體收穫事項，1200 字以上'),E('rptGain','實習成果及心得（具體收穫事項）',1200,'可從完成的工作項目、學到的技術與工具、團隊合作經驗等面向撰寫。換行即為新段落。'),
       H('參、建議事項','兩項合計 1000 字以上'),E('rptSelf','一、對自我和學校課程的檢視',0,'實習中發現自己的優缺點，以及學校課程與業界需求的落差或幫助。'),E('rptAdvice','二、對實習機構與日後想來該機構實習的學弟妹之建議',0,'對實習單位的建議，以及給學弟妹的準備方向。'),{t:'ccsum',keys:['rptSelf','rptAdvice'],min:1000},
       H('肆、未來期許、生涯規劃及目標','1200 字以上'),E('rptFuture','實習後之未來期許、生涯規劃及目標',1200,'實習後的改變、短中長期目標與具體規劃。'),
@@ -1122,7 +1100,6 @@ window.RptDocx=(function(){
       case 'gbtn': return `<div class="fld"><label>學分查詢</label><div><button type="button" class="gbtn" data-guide style="margin:0;padding:8px 12px;font-size:12.5px">學分怎麼查？看教學</button></div></div>`;
       case 'essay': return `<div class="fld blk"><label>${f.l}</label><textarea data-k="${f.k}" rows="8" class="essay" placeholder="${f.ph||''}"></textarea><span class="cc" data-cc="${f.k}" data-min="${f.min||0}"></span></div>`;
       case 'ccsum': return `<div class="ccsum" data-ccsum="${f.keys.join(',')}" data-min="${f.min}"></div>`;
-      case 'plan': return `<div class="fld blk" data-plan></div>`;
       case 'weeks': return `<div id="wkList"></div><div class="wkbar"><button type="button" class="obtn pri wkadd">＋ 新增一週</button><button type="button" class="obtn wkauto">依實習期間建立</button></div>`;
       case 'gal': return `<div class="fld blk">${f.l?`<label>${f.l}</label>`:''}<div class="gal" data-gal="${f.k}"></div>${f.hint?`<span class="ghint">${f.hint}</span>`:''}</div>`;
       case 'total': return `<div class="scoreband"><span class="sl">七項合計</span><span class="sr"><span class="sn">21 分以上為推薦實習</span><b class="mtotal">0</b><span class="tagr">推薦實習</span></span></div>`;
@@ -1391,7 +1368,7 @@ window.RptDocx=(function(){
       if(f.t==='date'){ g.n++; if(!(filled(data[f.p+'y'])&&filled(data[f.p+'m'])&&filled(data[f.p+'d']))) g.miss++; }
       if(f.t==='essay'){ g.n++; if(cc(data[f.k])<(f.min||1)) g.miss++; }
       if(f.t==='weeks'){ g.n++; const ws=weeksArr(); if(ws.length<WEEKS_MIN||ws.some(w=>wkStat(w)[0]!=='ok')) g.miss++; }
-      if(f.t==='plan'){ g.n++; if(!(data.galPlan||[]).length&&missingList('p5').length) g.miss++; }
+      if(f.t==='gal'&&f.k==='galPlan'){ g.n++; if(!(data.galPlan||[]).length) g.miss++; }
       if(f.t==='gal'&&f.k==='galPhotos'){ g.n++; if(!photoRule().ok) g.miss++; }
       if(f.t==='chips'){ const gr=(GROUPS[p]||[]).find(([l,keys])=>keys.join()===f.items.map(i=>i.k).join()); if(gr){ g.n++; if(!gr[1].some(k=>data[k])) g.miss++; } }
     });
@@ -1523,10 +1500,6 @@ window.RptDocx=(function(){
     const det=mform.querySelector(`.wk[data-i="${k.slice(2)}"]`), w=weeksArr()[+k.slice(2)]; if(!det||!w) return;
     const [sc,st]=wkStat(w), b=det.querySelector('.wst'); b.className='wst '+sc; b.textContent=st;
   }
-  function planHTML(){
-    const miss=missingList('p5').length, t=String(data.planTopic||'').trim();
-    return `<div class="planbox${miss?' bad':''}"><div>${miss?`第 05 份「實習計畫書」尚有 <b>${miss}</b> 項未填，填完後會自動帶入。`:`已自動帶入第 05 份「實習計畫書」${t?`：<b>${escH(t)}</b>`:''}`}</div><button type="button" class="obtn" data-goto="p5">前往第 05 份${miss?'填寫':'修改'}</button></div>`;
-  }
   function rptCounters(){
     mform.querySelectorAll('[data-cc]').forEach(el=>{ const n=cc(data[el.dataset.cc]), m=+el.dataset.min;
       el.className='cc'+(m?(n>=m?' ok':' bad'):''); el.innerHTML=`<span>已寫 <b>${n}</b> 字</span>`+(m?`<span>${n>=m?'✓ 已達':'需'} ${m} 字以上</span>`:''); });
@@ -1536,14 +1509,13 @@ window.RptDocx=(function(){
   function rptBind(){
     renderWeeks();
     mform.querySelectorAll('.gal[data-gal]').forEach(el=>{ if(!el.dataset.gal.startsWith('w:')) renderGal(el); });
-    const pl=mform.querySelector('[data-plan]'); if(pl) pl.innerHTML=planHTML();
     rptCounters();
   }
   function rptMissing(){
     const m=[];
     ['sid','name','org','rptSup','rptAdv'].forEach(k=>{ if(!filled(data[k])) m.push({k,l:LABEL[k]||k}); });
     [['s','實習開始日'],['e','實習結束日'],['rd','報告日期']].forEach(([p,l])=>{ if(!['y','m','d'].every(s=>filled(data[p+s]))) m.push({k:p+'y',l}); });
-    if(!(data.galPlan||[]).length&&missingList('p5').length) m.push({p:'p5',l:'壹、實習計畫書：第 05 份尚未填完（或上傳已簽名的掃描檔）'});
+    if(!(data.galPlan||[]).length) m.push({gal:'galPlan',l:'壹、實習計畫書：請上傳學期初已簽名的計畫書圖檔'});
     const g=cc(data.rptGain), a=cc(data.rptSelf), b=cc(data.rptAdvice), f=cc(data.rptFuture);
     if(g<1200) m.push({k:'rptGain',l:`貳、實習成果及心得（${g}／1200 字）`});
     if(!a) m.push({k:'rptSelf',l:'參-一、對自我和學校課程的檢視'});
@@ -1624,14 +1596,9 @@ window.RptDocx=(function(){
       +`</div><div class="cvd">中 華 民 國 ${escH(I.rdate)}</div></div>`;
     const toc=[[1,'壹',HD.plan],[1,'貳',HD.gain],[1,'參',HD.sug],[2,'一',HD.self],[2,'二',HD.adv],[1,'肆',HD.future],[1,'伍',HD.app],[2,'一',HD.log],[2,'二',HD.media],[2,'三',HD.contract],[2,'四',HD.cvZh],[2,'五',HD.cvEn]];
     h+=`<div class="sheet"><div class="toc-t">目錄</div><div class="toc">${toc.map(([l,n,t])=>`<div${l===2?' class="l2"':''}><span>${n}、 ${escH(t)}</span><span class="lead"></span></div>`).join('')}</div><p class="tocnote">頁碼會在 Word 開啟時自動更新</p></div>`;
-    const row=(l,v,top)=>`<tr><td class="lb${top?' tp':''}">${l}</td><td>${top?paras(v,'<p class="empty">（第 05 份未填）</p>'):escH(v||'')}</td></tr>`;
     const planScan=(data.galPlan||[]).filter(has);
     h+=`<div class="sheet"><h4>壹、 ${HD.plan}</h4>`
-      +(planScan.length?`<div class="rdoc">${planScan.map(p=>img(p.id)).join('')}</div>`:
-        `<div class="rt">國立雲林科技大學${escH(I.prog)} ${escH(I.course)} 實習計畫書</div><table class="rt-t"><tr><td class="sc" colspan="2">基本資料</td></tr>`
-        +[['學生學號：',data.sid],['學生姓名：',data.name],['學生手機：',data.phone],['學生EMAIL：',data.email],['實習機構名稱：',data.org],['實習機構地址：',data.orgAddr],['實習單位連絡人：',data.contact],['實習單位連絡人電話：',data.contactTel],['實習日期：',I.planDates]].map(([l,v])=>row(l,v)).join('')
-        +`<tr><td class="sc" colspan="2">實習計劃書</td></tr>${X.PLAN_ROWS.map(([l,k])=>row(l,data[k],true)).join('')}</table>`
-        +`<div class="rsig"><span>授課教師簽章：${data.sigTeacher?`<img src="${data.sigTeacher}" alt="">`:''}</span><span>主任簽章：${data.sigChief?`<img src="${data.sigChief}" alt="">`:''}</span></div>`)
+      +(planScan.length?`<div class="rdoc">${planScan.map(p=>img(p.id)).join('')}</div>`:'<p class="red">（請貼上自己的實習計畫書）</p>')
       +`<h4>貳、 ${escH(HD.gain)}</h4><div class="es">${essay(data.rptGain)}</div>`
       +`<h4>參、 ${escH(HD.sug)}</h4><h4 class="h2">一、${HD.self}</h4><div class="es">${essay(data.rptSelf)}</div><h4 class="h2">二、${HD.adv}</h4><div class="es">${essay(data.rptAdvice)}</div>`
       +`<h4>肆、 ${escH(HD.future)}</h4><div class="es">${essay(data.rptFuture)}</div></div>`;
@@ -1655,10 +1622,6 @@ window.RptDocx=(function(){
   }
 
   /* 下載 Word */
-  function sigImg(url){
-    return new Promise(res=>{ const m=/^data:image\/(png|jpe?g);base64,/.exec(url||''); if(!m) return res(null);
-      const im=new Image(); im.onload=()=>{ try{ res({bytes:Uint8Array.from(atob(url.slice(m[0].length)),c=>c.charCodeAt(0)),w:im.naturalWidth,h:im.naturalHeight,ext:m[1]==='png'?'png':'jpeg'}); }catch(e){ res(null); } }; im.onerror=()=>res(null); im.src=url; });
-  }
   async function doDocx(){
     const btns=['btnDocx','btnDocx2'].map(id=>document.getElementById(id));
     if(btns[0].disabled) return;
@@ -1667,8 +1630,7 @@ window.RptDocx=(function(){
       const ids=[...new Set(allImgIds())]; await Promise.all(ids.map(getImg));
       const imgs={};
       for(const id of ids){ const v=IMG.get(id); if(v) imgs[id]={bytes:new Uint8Array(await v.blob.arrayBuffer()),w:v.w,h:v.h,ext:v.type==='image/png'?'png':'jpeg'}; }
-      const sigs={}; for(const k of ['sigTeacher','sigChief']) if(data[k]) sigs[k]=await sigImg(data[k]);
-      const blob=window.RptDocx.build({d:data,tpl:RPT_TPL(),imgs,sigs});
+      const blob=window.RptDocx.build({d:data,tpl:RPT_TPL(),imgs});
       const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=window.RptDocx.info(data).fileName;
       document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },8000);
       const miss=rptMissing(), box=document.getElementById('valMsg');
